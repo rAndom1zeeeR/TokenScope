@@ -7,7 +7,8 @@
 	"editor.formatOnSaveMode": "file",
 	"editor.defaultFormatter": "oxc.oxc-vscode",
 	"editor.codeActionsOnSave": {
-		"source.fixAll.oxc": "explicit"
+		"source.fixAll.oxc": "explicit",
+		"source.fixAll.eslint": "explicit"
 	},
 	"oxc.enable": true,
 	"oxc.requireConfig": true,
@@ -48,9 +49,9 @@
 	"files.associations": {
 		"*.css": "tailwindcss"
 	},
-  "editor.quickSuggestions": {
-    "strings": "on"
-  },
-  "tailwindCSS.classAttributes": ["class", "ui"],
-  "tailwindCSS.classFunctions": ["defineAppConfig"],
+	"editor.quickSuggestions": {
+		"strings": "on"
+	},
+	"tailwindCSS.classAttributes": ["class", "ui"],
+	"tailwindCSS.classFunctions": ["defineAppConfig"]
 }

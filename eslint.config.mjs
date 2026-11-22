@@ -21,4 +21,10 @@ export default vueTs.then((configs) => [
 		],
 	},
 	...configs,
+	{
+		files: ['app/pages/**/*.vue', 'app/layouts/**/*.vue'],
+		rules: {
+			'vue/multi-word-component-names': 'off',
+		},
+	},
 ])

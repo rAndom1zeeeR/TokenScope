@@ -1,0 +1,15 @@
+{
+	"$schema": "./node_modules/oxlint/configuration_schema.json",
+	"env": {
+		"browser": true
+	},
+	"ignorePatterns": [
+		".nuxt",
+		".output",
+		".data",
+		".nitro",
+		".cache",
+		"dist",
+		"node_modules"
+	]
+}
