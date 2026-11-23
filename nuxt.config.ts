@@ -9,4 +9,7 @@ export default defineNuxtConfig({
 	eslint: {
 		config: { stylistic: true },
 	},
+	devServer: {
+    port: 3013,
+  },
 })
