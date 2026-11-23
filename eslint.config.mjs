@@ -1,30 +1,26 @@
-import pluginVue from 'eslint-plugin-vue'
-import { withVueTs, vueTsConfigs } from '@vue/eslint-config-typescript'
-import skipFormatting from 'eslint-config-prettier/flat'
+import withNuxt from './.nuxt/eslint.config.mjs'
 
-const vueTs = withVueTs(
-	pluginVue.configs['flat/essential'],
-	vueTsConfigs.recommended,
-	skipFormatting,
-)
-
-export default vueTs.then((configs) => [
+// Форматирование — oxfmt (см. .oxfmtrc.json), ESLint только ищет ошибки.
+export default withNuxt(
 	{
-		ignores: [
-			'.nuxt/**',
-			'.output/**',
-			'.data/**',
-			'.nitro/**',
-			'.cache/**',
-			'dist/**',
-			'node_modules/**',
-		],
+		ignores: ['.data/**', '.nitro/**', '.cache/**'],
 	},
-	...configs,
+	{
+		rules: {
+			'vue/html-self-closing': [
+				'error',
+				{
+					html: { void: 'always', normal: 'always', component: 'always' },
+					svg: 'always',
+					math: 'always',
+				},
+			],
+		},
+	},
 	{
 		files: ['app/pages/**/*.vue', 'app/layouts/**/*.vue'],
 		rules: {
 			'vue/multi-word-component-names': 'off',
 		},
 	},
-])
+)

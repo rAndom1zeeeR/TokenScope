@@ -24,35 +24,35 @@ UEditor
 ```vue
 <script setup lang="ts">
 const content = ref({
-  type: 'doc',
-  content: [
-    {
-      type: 'heading',
-      attrs: { level: 1 },
-      content: [{ type: 'text', text: 'Hello World' }]
-    },
-    {
-      type: 'paragraph',
-      content: [{ type: 'text', text: 'Start writing...' }]
-    }
-  ]
+	type: 'doc',
+	content: [
+		{
+			type: 'heading',
+			attrs: { level: 1 },
+			content: [{ type: 'text', text: 'Hello World' }],
+		},
+		{
+			type: 'paragraph',
+			content: [{ type: 'text', text: 'Start writing...' }],
+		},
+	],
 })
 </script>
 
 <template>
-  <UEditor v-slot="{ editor }" v-model="content">
-    <UEditorToolbar :editor="editor" />
-    <UEditorSuggestionMenu :editor="editor" />
-    <UEditorMentionMenu
-      :editor="editor"
-      :items="[
-        { label: 'Benjamin', avatar: { src: 'https://github.com/benjamincanac.png' } },
-        { label: 'Sébastien', avatar: { src: 'https://github.com/atinux.png' } }
-      ]"
-    />
-    <UEditorEmojiMenu :editor="editor" />
-    <UEditorDragHandle :editor="editor" />
-  </UEditor>
+	<UEditor v-slot="{ editor }" v-model="content">
+		<UEditorToolbar :editor="editor" />
+		<UEditorSuggestionMenu :editor="editor" />
+		<UEditorMentionMenu
+			:editor="editor"
+			:items="[
+				{ label: 'Benjamin', avatar: { src: 'https://github.com/benjamincanac.png' } },
+				{ label: 'Sébastien', avatar: { src: 'https://github.com/atinux.png' } },
+			]"
+		/>
+		<UEditorEmojiMenu :editor="editor" />
+		<UEditorDragHandle :editor="editor" />
+	</UEditor>
 </template>
 ```
 
@@ -99,27 +99,29 @@ Combine with Dashboard layout for a multi-document editor:
 
 ```vue [layouts/editor.vue]
 <template>
-  <UDashboardGroup>
-    <UDashboardSidebar collapsible resizable>
-      <template #header>
-        <UButton icon="i-lucide-plus" label="New document" block />
-      </template>
+	<UDashboardGroup>
+		<UDashboardSidebar collapsible resizable>
+			<template #header>
+				<UButton icon="i-lucide-plus" label="New document" block />
+			</template>
 
-      <template #default="{ collapsed }">
-        <UNavigationMenu
-          :collapsed="collapsed"
-          :items="documents.map(doc => ({
-            label: doc.title,
-            to: `/editor/${doc.id}`,
-            icon: 'i-lucide-file-text'
-          }))"
-          orientation="vertical"
-        />
-      </template>
-    </UDashboardSidebar>
+			<template #default="{ collapsed }">
+				<UNavigationMenu
+					:collapsed="collapsed"
+					:items="
+						documents.map((doc) => ({
+							label: doc.title,
+							to: `/editor/${doc.id}`,
+							icon: 'i-lucide-file-text',
+						}))
+					"
+					orientation="vertical"
+				/>
+			</template>
+		</UDashboardSidebar>
 
-    <slot />
-  </UDashboardGroup>
+		<slot />
+	</UDashboardGroup>
 </template>
 ```
 
@@ -131,23 +133,23 @@ const content = ref({ type: 'doc', content: [] })
 </script>
 
 <template>
-  <UDashboardPanel>
-    <template #header>
-      <UDashboardNavbar title="Editor">
-        <template #right>
-          <UButton label="Save" icon="i-lucide-save" />
-        </template>
-      </UDashboardNavbar>
-    </template>
+	<UDashboardPanel>
+		<template #header>
+			<UDashboardNavbar title="Editor">
+				<template #right>
+					<UButton label="Save" icon="i-lucide-save" />
+				</template>
+			</UDashboardNavbar>
+		</template>
 
-    <UContainer class="py-8">
-      <UEditor v-slot="{ editor }" v-model="content">
-        <UEditorToolbar :editor="editor" />
-        <UEditorSuggestionMenu :editor="editor" />
-        <UEditorEmojiMenu :editor="editor" />
-        <UEditorDragHandle :editor="editor" />
-      </UEditor>
-    </UContainer>
-  </UDashboardPanel>
+		<UContainer class="py-8">
+			<UEditor v-slot="{ editor }" v-model="content">
+				<UEditorToolbar :editor="editor" />
+				<UEditorSuggestionMenu :editor="editor" />
+				<UEditorEmojiMenu :editor="editor" />
+				<UEditorDragHandle :editor="editor" />
+			</UEditor>
+		</UContainer>
+	</UDashboardPanel>
 </template>
 ```

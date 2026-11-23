@@ -20,9 +20,9 @@ const items = computed<NavigationMenuItem[]>(() => [
 </script>
 
 <template>
-	<UHeader title="TokenScope" :ui="{ title: 'items-center' }">
+	<UHeader>
 		<template #title>
-			<LogoHeader />
+			<AppLogo />
 		</template>
 
 		<template #right>

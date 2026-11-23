@@ -10,30 +10,30 @@ import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
 
 const schema = z.object({
-  email: z.email('Invalid email'),
-  password: z.string().min(8, 'Min 8 characters')
+	email: z.email('Invalid email'),
+	password: z.string().min(8, 'Min 8 characters'),
 })
 
 type Schema = z.output<typeof schema>
 const state = reactive<Partial<Schema>>({ email: '', password: '' })
 
 function onSubmit(event: FormSubmitEvent<Schema>) {
-  // UForm validates before emitting @submit — access validated data via event.data
+	// UForm validates before emitting @submit — access validated data via event.data
 }
 </script>
 
 <template>
-  <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
-    <UFormField name="email" label="Email" required>
-      <UInput v-model="state.email" type="email" placeholder="you@example.com" />
-    </UFormField>
+	<UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
+		<UFormField name="email" label="Email" required>
+			<UInput v-model="state.email" type="email" placeholder="you@example.com" />
+		</UFormField>
 
-    <UFormField name="password" label="Password" required>
-      <UInput v-model="state.password" type="password" placeholder="Min 8 characters" />
-    </UFormField>
+		<UFormField name="password" label="Password" required>
+			<UInput v-model="state.password" type="password" placeholder="Min 8 characters" />
+		</UFormField>
 
-    <UButton type="submit" label="Sign in" />
-  </UForm>
+		<UButton type="submit" label="Sign in" />
+	</UForm>
 </template>
 ```
 
@@ -47,14 +47,14 @@ function onSubmit(event: FormSubmitEvent<Schema>) {
 
 ## UFormField props
 
-| Prop | Purpose |
-|---|---|
-| `name` | Links to schema field for validation errors |
-| `label` | Visible label text |
-| `description` | Help text below the input |
-| `hint` | Right-aligned hint text (e.g., "Optional") |
-| `required` | Shows required indicator |
-| `size` | Inherits to child input |
+| Prop          | Purpose                                     |
+| ------------- | ------------------------------------------- |
+| `name`        | Links to schema field for validation errors |
+| `label`       | Visible label text                          |
+| `description` | Help text below the input                   |
+| `hint`        | Right-aligned hint text (e.g., "Optional")  |
+| `required`    | Shows required indicator                    |
+| `size`        | Inherits to child input                     |
 
 ## Field layout patterns
 
@@ -181,31 +181,29 @@ function onSubmit(event: FormSubmitEvent<Schema>) {
 const form = useTemplateRef('form')
 
 async function validateAndSubmit() {
-  const result = await form.value?.validate({ silent: true })
-  if (result) {
-    // valid — submit
-  }
+	const result = await form.value?.validate({ silent: true })
+	if (result) {
+		// valid — submit
+	}
 }
 
 async function validateEmail() {
-  await form.value?.validate({ name: 'email', silent: true })
+	await form.value?.validate({ name: 'email', silent: true })
 }
 
 function setServerError() {
-  form.value?.setErrors([
-    { name: 'email', message: 'Email already taken' }
-  ])
+	form.value?.setErrors([{ name: 'email', message: 'Email already taken' }])
 }
 
 function resetErrors() {
-  form.value?.clear()
+	form.value?.clear()
 }
 </script>
 
 <template>
-  <UForm ref="form" :schema="schema" :state="state" @submit="onSubmit">
-    <!-- fields -->
-  </UForm>
+	<UForm ref="form" :schema="schema" :state="state" @submit="onSubmit">
+		<!-- fields -->
+	</UForm>
 </template>
 ```
 
@@ -216,7 +214,12 @@ By default, `validate()` throws a `FormValidationException` when validation fail
 Use `#footer="{ close }"` scoped slot for cancel/submit actions. Wrap the modal body in `UForm` with a `type="submit"` button in the footer so validation runs on submit.
 
 ```vue
-<UModal v-model:open="isOpen" title="Edit profile" description="Update your information." :ui="{ footer: 'justify-end' }">
+<UModal
+	v-model:open="isOpen"
+	title="Edit profile"
+	description="Update your information."
+	:ui="{ footer: 'justify-end' }"
+>
   <template #body>
     <UForm id="profile-form" :schema="schema" :state="state" class="space-y-4" @submit="onSave">
       <UFormField name="name" label="Name">

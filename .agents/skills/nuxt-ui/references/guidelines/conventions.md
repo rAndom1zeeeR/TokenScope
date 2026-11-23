@@ -9,10 +9,10 @@ Nuxt UI automatically registers `@nuxt/icon`, `@nuxt/fonts`, and `@nuxtjs/color-
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
-  modules: ['@nuxt/ui'],
-  icon: { /* @nuxt/icon options */ },
-  fonts: { /* @nuxt/fonts options */ },
-  colorMode: { /* @nuxtjs/color-mode options */ }
+	modules: ['@nuxt/ui'],
+	icon: {/* @nuxt/icon options */},
+	fonts: {/* @nuxt/fonts options */},
+	colorMode: {/* @nuxtjs/color-mode options */},
 })
 ```
 
@@ -25,7 +25,7 @@ When using `@nuxt/content`, it **must** come after `@nuxt/ui` in the `modules` a
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
-  modules: ['@nuxt/ui', '@nuxt/content']
+	modules: ['@nuxt/ui', '@nuxt/content'],
 })
 ```
 
@@ -33,8 +33,8 @@ Add `@source` in your CSS so Tailwind generates classes used in markdown/MDC:
 
 ```css
 /* app/assets/css/main.css */
-@import "tailwindcss";
-@import "@nuxt/ui";
+@import 'tailwindcss';
+@import '@nuxt/ui';
 
 @source "../../../content/**/*";
 ```
@@ -46,7 +46,7 @@ import { mapContentNavigation } from '@nuxt/ui/utils/content'
 import { findPageBreadcrumb } from '@nuxt/content/utils'
 
 const breadcrumb = computed(() =>
-  mapContentNavigation(findPageBreadcrumb(navigation.value, page.value?.path))
+	mapContentNavigation(findPageBreadcrumb(navigation.value, page.value?.path)),
 )
 ```
 
@@ -56,16 +56,17 @@ Recommended `.vscode/settings.json` for Tailwind IntelliSense autocomplete with 
 
 ```json
 {
-  "files.associations": { "*.css": "tailwindcss" },
-  "editor.quickSuggestions": { "strings": "on" },
-  "tailwindCSS.classAttributes": ["class", "ui"],
-  "tailwindCSS.classFunctions": ["defineAppConfig"]
+	"files.associations": { "*.css": "tailwindcss" },
+	"editor.quickSuggestions": { "strings": "on" },
+	"tailwindCSS.classAttributes": ["class", "ui"],
+	"tailwindCSS.classFunctions": ["defineAppConfig"]
 }
 ```
 
 ## UApp wrapper
 
 Always wrap your app in `UApp` — it provides:
+
 - Toast container (`useToast`)
 - Tooltip provider
 - Programmatic overlay context (`useOverlay`)
@@ -99,12 +100,14 @@ Custom local collections (Nuxt only):
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
-  icon: {
-    customCollections: [{
-      prefix: 'custom',
-      dir: './app/assets/icons'
-    }]
-  }
+	icon: {
+		customCollections: [
+			{
+				prefix: 'custom',
+				dir: './app/assets/icons',
+			},
+		],
+	},
 })
 ```
 
@@ -115,17 +118,17 @@ Components like `Modal`, `Select`, `Accordion`, etc. use default icons from `app
 ```ts
 // app.config.ts
 export default defineAppConfig({
-  ui: {
-    icons: {
-      loading: 'i-lucide-refresh-cw',
-      close: 'i-lucide-x',
-      check: 'i-lucide-check',
-      chevronDown: 'i-lucide-chevron-down',
-      chevronRight: 'i-lucide-chevron-right',
-      arrowLeft: 'i-lucide-arrow-left',
-      arrowRight: 'i-lucide-arrow-right'
-    }
-  }
+	ui: {
+		icons: {
+			loading: 'i-lucide-refresh-cw',
+			close: 'i-lucide-x',
+			check: 'i-lucide-check',
+			chevronDown: 'i-lucide-chevron-down',
+			chevronRight: 'i-lucide-chevron-right',
+			arrowLeft: 'i-lucide-arrow-left',
+			arrowRight: 'i-lucide-arrow-right',
+		},
+	},
 })
 ```
 
@@ -133,17 +136,17 @@ export default defineAppConfig({
 
 Most components follow consistent slot naming:
 
-| Slot | Used by | Purpose |
-|---|---|---|
-| `#header` | Card, Modal, Slideover, DashboardPanel | Top section |
-| `#body` | DashboardPanel | Scrollable content area |
-| `#footer` | Card, Modal, Slideover, DashboardPanel | Bottom section |
-| `#left` | Page, DashboardNavbar | Left sidebar or content |
-| `#right` | Page, DashboardNavbar, Header | Right sidebar or content |
-| `#leading` | Input, Button, Alert | Before main content (icon area) |
-| `#trailing` | Input, Button | After main content (icon area) |
-| `#content` | Modal, Slideover, Popover, Tooltip | Full content override |
-| `#default` | Most components | Main content area |
+| Slot        | Used by                                | Purpose                         |
+| ----------- | -------------------------------------- | ------------------------------- |
+| `#header`   | Card, Modal, Slideover, DashboardPanel | Top section                     |
+| `#body`     | DashboardPanel                         | Scrollable content area         |
+| `#footer`   | Card, Modal, Slideover, DashboardPanel | Bottom section                  |
+| `#left`     | Page, DashboardNavbar                  | Left sidebar or content         |
+| `#right`    | Page, DashboardNavbar, Header          | Right sidebar or content        |
+| `#leading`  | Input, Button, Alert                   | Before main content (icon area) |
+| `#trailing` | Input, Button                          | After main content (icon area)  |
+| `#content`  | Modal, Slideover, Popover, Tooltip     | Full content override           |
+| `#default`  | Most components                        | Main content area               |
 
 ## Items arrays
 
@@ -153,8 +156,8 @@ Many components accept an `items` prop. Two patterns:
 
 ```ts
 const items = [
-  { label: 'Edit', icon: 'i-lucide-pencil' },
-  { label: 'Delete', icon: 'i-lucide-trash', color: 'error' }
+	{ label: 'Edit', icon: 'i-lucide-pencil' },
+	{ label: 'Delete', icon: 'i-lucide-trash', color: 'error' },
 ]
 ```
 
@@ -162,13 +165,11 @@ const items = [
 
 ```ts
 const items = [
-  [
-    { label: 'Edit', icon: 'i-lucide-pencil' },
-    { label: 'Duplicate', icon: 'i-lucide-copy' }
-  ],
-  [
-    { label: 'Delete', icon: 'i-lucide-trash', color: 'error' }
-  ]
+	[
+		{ label: 'Edit', icon: 'i-lucide-pencil' },
+		{ label: 'Duplicate', icon: 'i-lucide-copy' },
+	],
+	[{ label: 'Delete', icon: 'i-lucide-trash', color: 'error' }],
 ]
 ```
 
@@ -183,12 +184,12 @@ Components supporting nested arrays: `UDropdownMenu`, `UContextMenu`, `UNavigati
 const toast = useToast()
 
 toast.add({
-  title: 'Success',
-  description: 'Item saved',
-  color: 'success',
-  icon: 'i-lucide-check-circle',
-  duration: 5000,
-  actions: [{ label: 'Undo', onClick: () => {} }]
+	title: 'Success',
+	description: 'Item saved',
+	color: 'success',
+	icon: 'i-lucide-check-circle',
+	duration: 5000,
+	actions: [{ label: 'Undo', onClick: () => {} }],
 })
 
 toast.remove('toast-id')
@@ -203,19 +204,21 @@ Programmatic modals, slideovers, drawers — no template `v-model` needed. See [
 const overlay = useOverlay()
 const modal = overlay.create(MyComponent)
 const instance = modal.open({ title: 'Confirm?' })
-if (await instance.result) { /* confirmed */ }
+if (await instance.result) {
+	/* confirmed */
+}
 ```
 
 ### defineShortcuts
 
 ```ts
 defineShortcuts({
-  meta_k: () => openSearch(),
-  escape: () => close(),
-  meta_enter: {
-    handler: () => submit(),
-    whenever: [isFormValid]
-  }
+	meta_k: () => openSearch(),
+	escape: () => close(),
+	meta_enter: {
+		handler: () => submit(),
+		whenever: [isFormValid],
+	},
 })
 ```
 
@@ -227,8 +230,8 @@ Wire up keyboard shortcuts from menu items:
 
 ```ts
 const items = [
-  { label: 'New file', kbds: ['meta', 'n'], onSelect: () => newFile() },
-  { label: 'Save', kbds: ['meta', 's'], onSelect: () => save() }
+	{ label: 'New file', kbds: ['meta', 'n'], onSelect: () => newFile() },
+	{ label: 'Save', kbds: ['meta', 's'], onSelect: () => save() },
 ]
 
 defineShortcuts(extractShortcuts(items))
@@ -246,9 +249,9 @@ import { fr } from '@nuxt/ui/locale'
 </script>
 
 <template>
-  <UApp :locale="fr">
-    <NuxtPage />
-  </UApp>
+	<UApp :locale="fr">
+		<NuxtPage />
+	</UApp>
 </template>
 ```
 
@@ -260,10 +263,10 @@ import { fr } from '@nuxt/ui/locale'
 import { en } from '@nuxt/ui/locale'
 
 const locale = extendLocale(en, {
-  code: 'en-AU',
-  messages: {
-    commandPalette: { placeholder: 'Search a component...' }
-  }
+	code: 'en-AU',
+	messages: {
+		commandPalette: { placeholder: 'Search a component...' },
+	},
 })
 ```
 
@@ -273,12 +276,12 @@ const locale = extendLocale(en, {
 import type { Messages } from '@nuxt/ui'
 
 const locale = defineLocale<Messages>({
-  name: 'My locale',
-  code: 'en',
-  dir: 'ltr',
-  messages: {
-    // all component message keys
-  }
+	name: 'My locale',
+	code: 'en',
+	dir: 'ltr',
+	messages: {
+		// all component message keys
+	},
 })
 ```
 
@@ -287,14 +290,14 @@ const locale = defineLocale<Messages>({
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
-  modules: ['@nuxt/ui', '@nuxtjs/i18n'],
-  i18n: {
-    locales: [
-      { code: 'en', language: 'en', name: 'English' },
-      { code: 'fr', language: 'fr', name: 'Français' },
-      { code: 'ar', language: 'ar', dir: 'rtl', name: 'العربية' }
-    ]
-  }
+	modules: ['@nuxt/ui', '@nuxtjs/i18n'],
+	i18n: {
+		locales: [
+			{ code: 'en', language: 'en', name: 'English' },
+			{ code: 'fr', language: 'fr', name: 'Français' },
+			{ code: 'ar', language: 'ar', dir: 'rtl', name: 'العربية' },
+		],
+	},
 })
 ```
 
@@ -303,14 +306,14 @@ export default defineNuxtConfig({
 const head = useLocaleHead()
 
 useHead(() => ({
-  htmlAttrs: head.value.htmlAttrs
+	htmlAttrs: head.value.htmlAttrs,
 }))
 </script>
 
 <template>
-  <UApp>
-    <NuxtPage />
-  </UApp>
+	<UApp>
+		<NuxtPage />
+	</UApp>
 </template>
 ```
 
@@ -319,6 +322,7 @@ With `@nuxtjs/i18n` installed, `UApp` follows the current i18n locale and only b
 ## Color mode
 
 Nuxt UI registers `@nuxtjs/color-mode` automatically. Built-in components for switching:
+
 - `UColorModeButton` — single button toggle (light/dark)
 - `UColorModeSwitch` — toggle switch
 - `UColorModeSelect` — dropdown with system/light/dark options
@@ -332,18 +336,20 @@ For custom color mode UI, use `useColorMode` with `ClientOnly` to avoid hydratio
 const colorMode = useColorMode()
 
 const isDark = computed({
-  get: () => colorMode.value === 'dark',
-  set: (v) => { colorMode.preference = v ? 'dark' : 'light' }
+	get: () => colorMode.value === 'dark',
+	set: (v) => {
+		colorMode.preference = v ? 'dark' : 'light'
+	},
 })
 </script>
 
 <template>
-  <ClientOnly>
-    <USwitch v-model="isDark" />
-    <template #fallback>
-      <div class="size-8" />
-    </template>
-  </ClientOnly>
+	<ClientOnly>
+		<USwitch v-model="isDark" />
+		<template #fallback>
+			<div class="size-8" />
+		</template>
+	</ClientOnly>
 </template>
 ```
 

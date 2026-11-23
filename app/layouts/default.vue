@@ -1,6 +1,9 @@
 <template>
-	<div class="flex flex-col min-h-screen">
-  <AppHeader />
-		<slot />
-	</div>
+	<UApp>
+		<AppHeader />
+		<UMain>
+			<slot />
+		</UMain>
+		<AppFooter />
+	</UApp>
 </template>

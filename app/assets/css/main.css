@@ -2,34 +2,34 @@
 @import '@nuxt/ui';
 
 @theme static {
-  /* акцент: #7cf5c0 из макета = оттенок 400, остальные досчитаны (HSL, тот же тон) */
-  --color-brand-50: #ecfef6;
-  --color-brand-100: #defcef;
-  --color-brand-200: #cbfbe6;
-  --color-brand-300: #aaf8d6;
-  --color-brand-400: #7cf5c0;
-  --color-brand-500: #3eea9f;
-  --color-brand-600: #17d381;
-  --color-brand-700: #1ca067;
-  --color-brand-800: #15794e;
-  --color-brand-900: #0f5737;
-  --color-brand-950: #08301e;
+	/* акцент: #7cf5c0 из макета = оттенок 400, остальные досчитаны (HSL, тот же тон) */
+	--color-brand-50: #ecfef6;
+	--color-brand-100: #defcef;
+	--color-brand-200: #cbfbe6;
+	--color-brand-300: #aaf8d6;
+	--color-brand-400: #7cf5c0;
+	--color-brand-500: #3eea9f;
+	--color-brand-600: #17d381;
+	--color-brand-700: #1ca067;
+	--color-brand-800: #15794e;
+	--color-brand-900: #0f5737;
+	--color-brand-950: #08301e;
 
-  /* нейтральная: ваши серые из макета */
-  --color-ink-50: #f9fafb;   /* досчитан */
-  --color-ink-100: #f1f2f4;  /* досчитан */
-  --color-ink-200: #e8eaed;  /* основной текст */
-  --color-ink-300: #c4cad3;  /* вторичный текст */
-  --color-ink-400: #8b93a0;  /* приглушённый текст */
-  --color-ink-500: #626a76;  /* досчитан */
-  --color-ink-600: #3a424d;
-  --color-ink-700: #2a303a;  /* граница */
-  --color-ink-800: #1b2027;  /* hover, строки таблицы */
-  --color-ink-900: #0b0d10;  /* фон страницы */
-  --color-ink-950: #06080a;  /* досчитан */
+	/* нейтральная: ваши серые из макета */
+	--color-ink-50: #f9fafb; /* досчитан */
+	--color-ink-100: #f1f2f4; /* досчитан */
+	--color-ink-200: #e8eaed; /* основной текст */
+	--color-ink-300: #c4cad3; /* вторичный текст */
+	--color-ink-400: #8b93a0; /* приглушённый текст */
+	--color-ink-500: #626a76; /* досчитан */
+	--color-ink-600: #3a424d;
+	--color-ink-700: #2a303a; /* граница */
+	--color-ink-800: #1b2027; /* hover, строки таблицы */
+	--color-ink-900: #0b0d10; /* фон страницы */
+	--color-ink-950: #06080a; /* досчитан */
 }
 
 @theme {
-  --font-sans: 'Inter', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace
+	--font-sans: 'Inter', system-ui, sans-serif;
+	--font-mono: 'JetBrains Mono', monospace;
 }

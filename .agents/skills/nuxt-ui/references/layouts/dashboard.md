@@ -32,53 +32,54 @@ UApp
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
 
-const items = computed<NavigationMenuItem[]>(() => [{
-  label: 'Home',
-  icon: 'i-lucide-house',
-  to: '/dashboard'
-}, {
-  label: 'Inbox',
-  icon: 'i-lucide-inbox',
-  to: '/dashboard/inbox'
-}, {
-  label: 'Users',
-  icon: 'i-lucide-users',
-  to: '/dashboard/users'
-}, {
-  label: 'Settings',
-  icon: 'i-lucide-settings',
-  to: '/dashboard/settings'
-}])
+const items = computed<NavigationMenuItem[]>(() => [
+	{
+		label: 'Home',
+		icon: 'i-lucide-house',
+		to: '/dashboard',
+	},
+	{
+		label: 'Inbox',
+		icon: 'i-lucide-inbox',
+		to: '/dashboard/inbox',
+	},
+	{
+		label: 'Users',
+		icon: 'i-lucide-users',
+		to: '/dashboard/users',
+	},
+	{
+		label: 'Settings',
+		icon: 'i-lucide-settings',
+		to: '/dashboard/settings',
+	},
+])
 </script>
 
 <template>
-  <UDashboardGroup>
-    <UDashboardSidebar collapsible resizable>
-      <template #header="{ collapsed }">
-        <UDashboardSearchButton :collapsed="collapsed" />
-      </template>
+	<UDashboardGroup>
+		<UDashboardSidebar collapsible resizable>
+			<template #header="{ collapsed }">
+				<UDashboardSearchButton :collapsed="collapsed" />
+			</template>
 
-      <template #default="{ collapsed }">
-        <UNavigationMenu
-          :collapsed="collapsed"
-          :items="items"
-          orientation="vertical"
-        />
-      </template>
+			<template #default="{ collapsed }">
+				<UNavigationMenu :collapsed="collapsed" :items="items" orientation="vertical" />
+			</template>
 
-      <template #footer="{ collapsed }">
-        <UButton
-          :icon="collapsed ? 'i-lucide-log-out' : undefined"
-          :label="collapsed ? undefined : 'Sign out'"
-          color="neutral"
-          variant="ghost"
-          block
-        />
-      </template>
-    </UDashboardSidebar>
+			<template #footer="{ collapsed }">
+				<UButton
+					:icon="collapsed ? 'i-lucide-log-out' : undefined"
+					:label="collapsed ? undefined : 'Sign out'"
+					color="neutral"
+					variant="ghost"
+					block
+				/>
+			</template>
+		</UDashboardSidebar>
 
-    <slot />
-  </UDashboardGroup>
+		<slot />
+	</UDashboardGroup>
 </template>
 ```
 
@@ -90,22 +91,22 @@ definePageMeta({ layout: 'dashboard' })
 </script>
 
 <template>
-  <UDashboardPanel>
-    <template #header>
-      <UDashboardNavbar title="Home">
-        <template #leading>
-          <UDashboardSidebarCollapse />
-        </template>
-        <template #right>
-          <UButton icon="i-lucide-plus" label="New" />
-        </template>
-      </UDashboardNavbar>
-    </template>
+	<UDashboardPanel>
+		<template #header>
+			<UDashboardNavbar title="Home">
+				<template #leading>
+					<UDashboardSidebarCollapse />
+				</template>
+				<template #right>
+					<UButton icon="i-lucide-plus" label="New" />
+				</template>
+			</UDashboardNavbar>
+		</template>
 
-    <template #body>
-      <!-- Page content -->
-    </template>
-  </UDashboardPanel>
+		<template #body>
+			<!-- Page content -->
+		</template>
+	</UDashboardPanel>
 </template>
 ```
 
@@ -121,22 +122,22 @@ definePageMeta({ layout: 'dashboard' })
 
 Root wrapper. Manages sidebar state and persistence.
 
-| Prop | Default | Purpose |
-|---|---|---|
-| `storage` | `'cookie'` | `'cookie'` or `'local'` |
-| `persistent` | `true` | Set to `false` to stop saving sizes |
-| `storage-key` | `'dashboard'` | Storage key name |
+| Prop          | Default       | Purpose                             |
+| ------------- | ------------- | ----------------------------------- |
+| `storage`     | `'cookie'`    | `'cookie'` or `'local'`             |
+| `persistent`  | `true`        | Set to `false` to stop saving sizes |
+| `storage-key` | `'dashboard'` | Storage key name                    |
 
 ### DashboardSidebar
 
 Resizable, collapsible sidebar. Must be inside `DashboardGroup`.
 
-| Prop | Default | Purpose |
-|---|---|---|
-| `resizable` | `false` | Drag to resize |
-| `collapsible` | `false` | Collapse when dragged to edge |
-| `side` | `'left'` | `'left'` or `'right'` |
-| `mode` | `'slideover'` | Mobile: `'modal'`, `'slideover'`, `'drawer'` |
+| Prop          | Default       | Purpose                                      |
+| ------------- | ------------- | -------------------------------------------- |
+| `resizable`   | `false`       | Drag to resize                               |
+| `collapsible` | `false`       | Collapse when dragged to edge                |
+| `side`        | `'left'`      | `'left'` or `'right'`                        |
+| `mode`        | `'slideover'` | Mobile: `'modal'`, `'slideover'`, `'drawer'` |
 
 All slots receive `{ collapsed, collapse }` — `collapsed` is the boolean state, `collapse(value)` toggles it programmatically. Use `v-model:collapsed` and `v-model:open` (mobile) for state control.
 
@@ -161,23 +162,23 @@ definePageMeta({ layout: 'dashboard' })
 </script>
 
 <template>
-  <UDashboardPanel id="inbox-list" resizable>
-    <template #header>
-      <UDashboardNavbar title="Inbox" />
-    </template>
-    <template #body>
-      <!-- Email list -->
-    </template>
-  </UDashboardPanel>
+	<UDashboardPanel id="inbox-list" resizable>
+		<template #header>
+			<UDashboardNavbar title="Inbox" />
+		</template>
+		<template #body>
+			<!-- Email list -->
+		</template>
+	</UDashboardPanel>
 
-  <UDashboardPanel id="inbox-detail" class="hidden lg:flex">
-    <template #header>
-      <UDashboardNavbar title="Message" />
-    </template>
-    <template #body>
-      <!-- Email content -->
-    </template>
-  </UDashboardPanel>
+	<UDashboardPanel id="inbox-detail" class="hidden lg:flex">
+		<template #header>
+			<UDashboardNavbar title="Message" />
+		</template>
+		<template #body>
+			<!-- Email content -->
+		</template>
+	</UDashboardPanel>
 </template>
 ```
 
@@ -203,17 +204,17 @@ definePageMeta({ layout: 'dashboard' })
 
 ```vue [layouts/dashboard.vue]
 <template>
-  <UDashboardGroup>
-    <UDashboardSidebar>
-      <template #header>
-        <UDashboardSearchButton />
-      </template>
-    </UDashboardSidebar>
+	<UDashboardGroup>
+		<UDashboardSidebar>
+			<template #header>
+				<UDashboardSearchButton />
+			</template>
+		</UDashboardSidebar>
 
-    <slot />
+		<slot />
 
-    <UDashboardSearch :groups="searchGroups" />
-  </UDashboardGroup>
+		<UDashboardSearch :groups="searchGroups" />
+	</UDashboardGroup>
 </template>
 ```
 

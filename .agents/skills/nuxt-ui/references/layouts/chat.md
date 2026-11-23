@@ -30,10 +30,7 @@ pnpm add ai @ai-sdk/vue @comark/vue
 
 ```ts [nuxt.config.ts]
 export default defineNuxtConfig({
-  modules: [
-    '@nuxt/ui',
-    '@comark/nuxt'
-  ]
+	modules: ['@nuxt/ui', '@comark/nuxt'],
 })
 ```
 
@@ -47,11 +44,11 @@ When using the `highlight` plugin, add the following CSS to your stylesheet:
 
 ```css [main.css]
 html.dark .shiki span {
-  color: var(--shiki-dark) !important;
-  background-color: var(--shiki-dark-bg) !important;
-  font-style: var(--shiki-dark-font-style) !important;
-  font-weight: var(--shiki-dark-font-weight) !important;
-  text-decoration: var(--shiki-dark-text-decoration) !important;
+	color: var(--shiki-dark) !important;
+	background-color: var(--shiki-dark-bg) !important;
+	font-style: var(--shiki-dark-font-style) !important;
+	font-weight: var(--shiki-dark-font-weight) !important;
+	text-decoration: var(--shiki-dark-text-decoration) !important;
 }
 ```
 
@@ -62,39 +59,49 @@ These examples target AI SDK v7 (`instructions`, `toUIMessageStream`).
 Using [Vercel AI Gateway](https://vercel.com/ai-gateway) (recommended):
 
 ```ts [server/api/chat.post.ts]
-import { streamText, convertToModelMessages, toUIMessageStream, createUIMessageStreamResponse } from 'ai'
+import {
+	streamText,
+	convertToModelMessages,
+	toUIMessageStream,
+	createUIMessageStreamResponse,
+} from 'ai'
 
 export default defineEventHandler(async (event) => {
-  const { messages } = await readBody(event)
+	const { messages } = await readBody(event)
 
-  const result = streamText({
-    model: 'anthropic/claude-sonnet-5.5',
-    instructions: 'You are a helpful assistant.',
-    messages: await convertToModelMessages(messages)
-  })
+	const result = streamText({
+		model: 'anthropic/claude-sonnet-5.5',
+		instructions: 'You are a helpful assistant.',
+		messages: await convertToModelMessages(messages),
+	})
 
-  const stream = toUIMessageStream({ stream: result.stream })
-  return createUIMessageStreamResponse({ stream })
+	const stream = toUIMessageStream({ stream: result.stream })
+	return createUIMessageStreamResponse({ stream })
 })
 ```
 
 Or with a direct provider (e.g., `pnpm add @ai-sdk/openai`):
 
 ```ts [server/api/chat.post.ts]
-import { streamText, convertToModelMessages, toUIMessageStream, createUIMessageStreamResponse } from 'ai'
+import {
+	streamText,
+	convertToModelMessages,
+	toUIMessageStream,
+	createUIMessageStreamResponse,
+} from 'ai'
 import { openai } from '@ai-sdk/openai'
 
 export default defineEventHandler(async (event) => {
-  const { messages } = await readBody(event)
+	const { messages } = await readBody(event)
 
-  const result = streamText({
-    model: openai('gpt-5-nano'),
-    instructions: 'You are a helpful assistant.',
-    messages: await convertToModelMessages(messages)
-  })
+	const result = streamText({
+		model: openai('gpt-5-nano'),
+		instructions: 'You are a helpful assistant.',
+		messages: await convertToModelMessages(messages),
+	})
 
-  const stream = toUIMessageStream({ stream: result.stream })
-  return createUIMessageStreamResponse({ stream })
+	const stream = toUIMessageStream({ stream: result.stream })
+	return createUIMessageStreamResponse({ stream })
 })
 ```
 
@@ -124,68 +131,68 @@ definePageMeta({ layout: 'dashboard' })
 const input = ref('')
 
 const { messages, status, error, sendMessage, stop, regenerate } = useChat({
-  onError(error) {
-    console.error(error)
-  }
+	onError(error) {
+		console.error(error)
+	},
 })
 
 function onSubmit() {
-  if (!input.value.trim()) return
-  sendMessage({ text: input.value })
-  input.value = ''
+	if (!input.value.trim()) return
+	sendMessage({ text: input.value })
+	input.value = ''
 }
 </script>
 
 <template>
-  <UDashboardPanel>
-    <template #header>
-      <UDashboardNavbar title="Chat" />
-    </template>
+	<UDashboardPanel>
+		<template #header>
+			<UDashboardNavbar title="Chat" />
+		</template>
 
-    <template #body>
-      <UContainer>
-        <UChatMessages :messages="messages" :status="status">
-          <template #part="{ part, message, streaming }">
-            <UChatReasoning
-              v-if="isReasoningUIPart(part)"
-              :text="part.text"
-              :streaming="isPartStreaming(part, streaming)"
-            >
-              <Comark
-                :markdown="part.text"
-                :streaming="isPartStreaming(part, streaming)"
-                :plugins="[highlight()]"
-                class="*:first:mt-0 *:last:mb-0"
-              />
-            </UChatReasoning>
+		<template #body>
+			<UContainer>
+				<UChatMessages :messages="messages" :status="status">
+					<template #part="{ part, message, streaming }">
+						<UChatReasoning
+							v-if="isReasoningUIPart(part)"
+							:text="part.text"
+							:streaming="isPartStreaming(part, streaming)"
+						>
+							<Comark
+								:markdown="part.text"
+								:streaming="isPartStreaming(part, streaming)"
+								:plugins="[highlight()]"
+								class="*:first:mt-0 *:last:mb-0"
+							/>
+						</UChatReasoning>
 
-            <UChatTool
-              v-else-if="isToolUIPart(part)"
-              :text="getToolName(part)"
-              :streaming="isToolStreaming(part, streaming)"
-              :error="part.state === 'output-error'"
-            />
+						<UChatTool
+							v-else-if="isToolUIPart(part)"
+							:text="getToolName(part)"
+							:streaming="isToolStreaming(part, streaming)"
+							:error="part.state === 'output-error'"
+						/>
 
-            <Comark
-              v-else-if="isTextUIPart(part) && message.role === 'assistant'"
-              :markdown="part.text"
-              :streaming="isPartStreaming(part, streaming)"
-              :plugins="[highlight()]"
-              class="*:first:mt-0 *:last:mb-0"
-            />
-          </template>
-        </UChatMessages>
-      </UContainer>
-    </template>
+						<Comark
+							v-else-if="isTextUIPart(part) && message.role === 'assistant'"
+							:markdown="part.text"
+							:streaming="isPartStreaming(part, streaming)"
+							:plugins="[highlight()]"
+							class="*:first:mt-0 *:last:mb-0"
+						/>
+					</template>
+				</UChatMessages>
+			</UContainer>
+		</template>
 
-    <template #footer>
-      <UContainer class="pb-4 sm:pb-6">
-        <UChatPrompt v-model="input" :error="error" @submit="onSubmit">
-          <UChatPromptSubmit :status="status" @stop="stop()" @reload="regenerate()" />
-        </UChatPrompt>
-      </UContainer>
-    </template>
-  </UDashboardPanel>
+		<template #footer>
+			<UContainer class="pb-4 sm:pb-6">
+				<UChatPrompt v-model="input" :error="error" @submit="onSubmit">
+					<UChatPromptSubmit :status="status" @stop="stop()" @reload="regenerate()" />
+				</UChatPrompt>
+			</UContainer>
+		</template>
+	</UDashboardPanel>
 </template>
 ```
 
@@ -241,18 +248,18 @@ Combine with dashboard layout for a ChatGPT-like interface:
 
 ```vue [layouts/dashboard.vue]
 <template>
-  <UDashboardGroup>
-    <UDashboardSidebar collapsible resizable>
-      <template #header>
-        <UButton icon="i-lucide-plus" label="New chat" block />
-      </template>
+	<UDashboardGroup>
+		<UDashboardSidebar collapsible resizable>
+			<template #header>
+				<UButton icon="i-lucide-plus" label="New chat" block />
+			</template>
 
-      <template #default>
-        <UNavigationMenu :items="conversations" orientation="vertical" />
-      </template>
-    </UDashboardSidebar>
+			<template #default>
+				<UNavigationMenu :items="conversations" orientation="vertical" />
+			</template>
+		</UDashboardSidebar>
 
-    <slot />
-  </UDashboardGroup>
+		<slot />
+	</UDashboardGroup>
 </template>
 ```

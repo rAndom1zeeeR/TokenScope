@@ -4,15 +4,15 @@
 
 Nuxt UI uses 7 semantic colors. Never use raw Tailwind palette colors in components — always use these semantic names.
 
-| Color | Default | When to use |
-|---|---|---|
-| `primary` | green | CTAs, active states, brand accent, links |
-| `secondary` | blue | Secondary actions, complementary highlights |
-| `success` | green | Success messages, confirmations, positive states |
-| `info` | blue | Informational alerts, tips, neutral highlights |
-| `warning` | yellow | Warnings, caution states, pending actions |
-| `error` | red | Errors, destructive actions, validation failures |
-| `neutral` | slate | Text, borders, backgrounds, disabled states, chrome |
+| Color       | Default | When to use                                         |
+| ----------- | ------- | --------------------------------------------------- |
+| `primary`   | green   | CTAs, active states, brand accent, links            |
+| `secondary` | blue    | Secondary actions, complementary highlights         |
+| `success`   | green   | Success messages, confirmations, positive states    |
+| `info`      | blue    | Informational alerts, tips, neutral highlights      |
+| `warning`   | yellow  | Warnings, caution states, pending actions           |
+| `error`     | red     | Errors, destructive actions, validation failures    |
+| `neutral`   | slate   | Text, borders, backgrounds, disabled states, chrome |
 
 ### Choosing colors for components
 
@@ -27,30 +27,31 @@ Nuxt UI uses 7 semantic colors. Never use raw Tailwind palette colors in compone
 ```ts
 // Nuxt — app.config.ts
 export default defineAppConfig({
-  ui: {
-    colors: {
-      primary: 'indigo',
-      secondary: 'violet',
-      success: 'emerald',
-      error: 'rose',
-      neutral: 'zinc'
-    }
-  }
+	ui: {
+		colors: {
+			primary: 'indigo',
+			secondary: 'violet',
+			success: 'emerald',
+			error: 'rose',
+			neutral: 'zinc',
+		},
+	},
 })
 ```
 
 ```ts
 // Vue — vite.config.ts
 ui({
-  ui: {
-    colors: { primary: 'indigo', secondary: 'violet', neutral: 'zinc' }
-  }
+	ui: {
+		colors: { primary: 'indigo', secondary: 'violet', neutral: 'zinc' },
+	},
 })
 ```
 
 Only colors that exist in your theme work — either Tailwind's defaults or custom colors defined with `@theme`.
 
 Available color palettes:
+
 - **Standard Tailwind**: red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose
 - **Neutral palettes** (for `neutral` key — pick one that matches the aesthetic):
   - `slate` — cool blue-gray, professional (default)
@@ -70,17 +71,17 @@ Available color palettes:
 ```css
 /* app/assets/css/main.css */
 @theme static {
-  --color-brand-50: #fef2f2;
-  --color-brand-100: #fee2e2;
-  --color-brand-200: #fecaca;
-  --color-brand-300: #fca5a5;
-  --color-brand-400: #f87171;
-  --color-brand-500: #ef4444;
-  --color-brand-600: #dc2626;
-  --color-brand-700: #b91c1c;
-  --color-brand-800: #991b1b;
-  --color-brand-900: #7f1d1d;
-  --color-brand-950: #450a0a;
+	--color-brand-50: #fef2f2;
+	--color-brand-100: #fee2e2;
+	--color-brand-200: #fecaca;
+	--color-brand-300: #fca5a5;
+	--color-brand-400: #f87171;
+	--color-brand-500: #ef4444;
+	--color-brand-600: #dc2626;
+	--color-brand-700: #b91c1c;
+	--color-brand-800: #991b1b;
+	--color-brand-900: #7f1d1d;
+	--color-brand-950: #450a0a;
 }
 ```
 
@@ -93,11 +94,11 @@ To add a color beyond the 7 defaults (e.g., `tertiary`), register it in `theme.c
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
-  ui: {
-    theme: {
-      colors: ['primary', 'secondary', 'tertiary', 'info', 'success', 'warning', 'error']
-    }
-  }
+	ui: {
+		theme: {
+			colors: ['primary', 'secondary', 'tertiary', 'info', 'success', 'warning', 'error'],
+		},
+	},
 })
 ```
 
@@ -106,6 +107,7 @@ export default defineNuxtConfig({
 Use these everywhere instead of raw palette colors:
 
 ### Text
+
 - `text-default` — primary body text
 - `text-muted` — secondary text (descriptions, hints)
 - `text-toned` — medium-emphasis text (between muted and default)
@@ -114,6 +116,7 @@ Use these everywhere instead of raw palette colors:
 - `text-inverted` — text on inverted backgrounds (pair with `bg-inverted`)
 
 ### Backgrounds
+
 - `bg-default` — page background
 - `bg-muted` — subtle backgrounds (hover states, alternating rows)
 - `bg-elevated` — raised surfaces (cards, dropdowns)
@@ -121,6 +124,7 @@ Use these everywhere instead of raw palette colors:
 - `bg-inverted` — inverse background (dark on light, light on dark)
 
 ### Borders
+
 - `border-default` — standard borders
 - `border-muted` — subtle borders (dividers, separators)
 - `border-accented` — accent borders (active states)
@@ -130,14 +134,14 @@ Use these everywhere instead of raw palette colors:
 
 Most components accept a `variant` prop. Choose based on visual weight:
 
-| Variant | Weight | When to use |
-|---|---|---|
-| `solid` | Highest | Primary actions, main CTAs |
-| `outline` | Medium | Secondary actions, form fields |
-| `soft` | Medium-low | Tags, badges, subtle buttons |
-| `subtle` | Low | Background highlights, less prominent actions |
-| `ghost` | Lowest | Inline actions, icon buttons, navigation items |
-| `link` | Lowest | Text-only links inside content |
+| Variant   | Weight     | When to use                                    |
+| --------- | ---------- | ---------------------------------------------- |
+| `solid`   | Highest    | Primary actions, main CTAs                     |
+| `outline` | Medium     | Secondary actions, form fields                 |
+| `soft`    | Medium-low | Tags, badges, subtle buttons                   |
+| `subtle`  | Low        | Background highlights, less prominent actions  |
+| `ghost`   | Lowest     | Inline actions, icon buttons, navigation items |
+| `link`    | Lowest     | Text-only links inside content                 |
 
 ### Rules
 
@@ -157,6 +161,7 @@ Override theme **slots** on a single instance — wins over global config and va
 ```
 
 Rules for `ui` overrides:
+
 - **Prefer `defaultVariants`** over slot class overrides when possible (e.g., changing default button variant/size).
 - **Don't duplicate default classes** — check the generated theme file first to see what's already there.
 - Border radius defaults come from `--ui-radius`, but you can override with `rounded-*` classes in `ui` or `class` when you need a specific radius on a component.
@@ -172,6 +177,7 @@ Override the **root** (or `base`) slot only — simpler than `ui` for single-slo
 ### Finding slot names
 
 Read the generated theme file for any component:
+
 - **Nuxt**: `.nuxt/ui/<component>.ts`
 - **Vue**: `node_modules/.nuxt-ui/ui/<component>.ts`
 
@@ -184,22 +190,24 @@ Override `slots`, `variants`, `compoundVariants`, and `defaultVariants` globally
 ```ts
 // Nuxt — app.config.ts
 export default defineAppConfig({
-  ui: {
-    button: {
-      slots: {
-        base: 'font-bold'
-      },
-      compoundVariants: [{
-        color: 'neutral',
-        variant: 'outline',
-        class: 'ring-default hover:bg-accented'
-      }],
-      defaultVariants: {
-        color: 'neutral',
-        variant: 'outline'
-      }
-    }
-  }
+	ui: {
+		button: {
+			slots: {
+				base: 'font-bold',
+			},
+			compoundVariants: [
+				{
+					color: 'neutral',
+					variant: 'outline',
+					class: 'ring-default hover:bg-accented',
+				},
+			],
+			defaultVariants: {
+				color: 'neutral',
+				variant: 'outline',
+			},
+		},
+	},
 })
 ```
 
@@ -218,13 +226,13 @@ In global config it replaces the slot's own classes, so `variants` and `compound
 ```ts
 // app.config.ts, applies to every instance
 export default defineAppConfig({
-  ui: {
-    button: {
-      slots: {
-        label: () => 'text-base font-bold'
-      }
-    }
-  }
+	ui: {
+		button: {
+			slots: {
+				label: () => 'text-base font-bold',
+			},
+		},
+	},
 })
 ```
 
@@ -246,14 +254,14 @@ Override default `size` and `color` for **all** components at once:
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
-  ui: {
-    theme: {
-      defaultVariants: {
-        size: 'lg',
-        color: 'neutral'
-      }
-    }
-  }
+	ui: {
+		theme: {
+			defaultVariants: {
+				size: 'lg',
+				color: 'neutral',
+			},
+		},
+	},
 })
 ```
 
@@ -264,11 +272,11 @@ Controls whether interactive components get `transition-colors`. Enabled by defa
 ```ts
 // nuxt.config.ts — disable transitions
 export default defineNuxtConfig({
-  ui: {
-    theme: {
-      transitions: false
-    }
-  }
+	ui: {
+		theme: {
+			transitions: false,
+		},
+	},
 })
 ```
 
@@ -279,18 +287,18 @@ When using Tailwind CSS with a prefix, configure the same prefix in Nuxt UI so c
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
-  ui: {
-    theme: {
-      prefix: 'tw'
-    }
-  }
+	ui: {
+		theme: {
+			prefix: 'tw',
+		},
+	},
 })
 ```
 
 ```css
 /* app/assets/css/main.css */
-@import "tailwindcss" prefix(tw);
-@import "@nuxt/ui";
+@import 'tailwindcss' prefix(tw);
+@import '@nuxt/ui';
 ```
 
 ### Tree-shaking with `experimental.componentDetection`
@@ -300,11 +308,11 @@ Enable automatic component detection to only generate CSS for components you act
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
-  ui: {
-    experimental: {
-      componentDetection: true
-    }
-  }
+	ui: {
+		experimental: {
+			componentDetection: true,
+		},
+	},
 })
 ```
 
@@ -322,8 +330,8 @@ Customize Tailwind design tokens in `main.css`:
 
 ```css
 @theme {
-  --font-sans: 'Public Sans', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+	--font-sans: 'Public Sans', system-ui, sans-serif;
+	--font-mono: 'JetBrains Mono', monospace;
 }
 ```
 
@@ -333,7 +341,7 @@ In Nuxt, fonts defined here are automatically loaded by `@nuxt/fonts`.
 
 ```css
 @theme {
-  --breakpoint-3xl: 1920px;
+	--breakpoint-3xl: 1920px;
 }
 ```
 
@@ -343,9 +351,9 @@ Nuxt UI exposes CSS variables you can override in `main.css`:
 
 ```css
 :root {
-  --ui-radius: 0.25rem;
-  --ui-container: 80rem;
-  --ui-header-height: 4rem;
+	--ui-radius: 0.25rem;
+	--ui-container: 80rem;
+	--ui-header-height: 4rem;
 }
 ```
 
@@ -355,10 +363,10 @@ Each semantic color defaults to shade 500 in light mode, 400 in dark mode. Overr
 
 ```css
 :root {
-  --ui-primary: var(--ui-color-primary-700);
+	--ui-primary: var(--ui-color-primary-700);
 }
 .dark {
-  --ui-primary: var(--ui-color-primary-200);
+	--ui-primary: var(--ui-color-primary-200);
 }
 ```
 
@@ -370,9 +378,9 @@ You can use `var(--ui-color-<name>-<shade>)` to reference shades from the active
 
 ```css
 :root {
-  --ui-primary: black;
+	--ui-primary: black;
 }
 .dark {
-  --ui-primary: white;
+	--ui-primary: white;
 }
 ```

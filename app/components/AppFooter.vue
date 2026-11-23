@@ -1,6 +1,11 @@
 <template>
-	<footer class="flex justify-between items-center gap-2">
-		<p>TokenScope · open-source token and trader analytics</p>
-		<p>Built with Nuxt and Vue</p>
-	</footer>
+	<UFooter>
+		<template #left>
+			<p class="text-sm text-muted">TokenScope · open-source token and trader analytics</p>
+		</template>
+
+		<template #right>
+			<p class="text-sm text-muted">Built with Nuxt and Vue</p>
+		</template>
+	</UFooter>
 </template>
