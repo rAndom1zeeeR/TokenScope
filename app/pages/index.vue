@@ -1,3 +1,6 @@
 <template>
-	<AppHero />
+	<UContainer>
+		<AppHero />
+		<TokenRecentTable />
+	</UContainer>
 </template>
