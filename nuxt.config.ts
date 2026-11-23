@@ -5,6 +5,7 @@ export default defineNuxtConfig({
 	typescript: { strict: true },
 	modules: ['@nuxt/ui', '@nuxt/eslint'],
 	css: ['~/assets/css/main.css'],
+  colorMode: { preference: 'dark', fallback: 'dark' },
 	eslint: {
 		config: { stylistic: true },
 	},
