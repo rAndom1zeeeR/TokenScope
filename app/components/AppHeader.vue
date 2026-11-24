@@ -6,15 +6,15 @@ const route = useRoute()
 const items = computed<NavigationMenuItem[]>(() => [
 	{
 		label: 'Tokens',
-		to: '/tokens',
+		to: '/token',
 		icon: 'i-lucide-coins',
-		active: route.path.startsWith('/tokens'),
+		active: route.path.startsWith('/token'),
 	},
 	{
 		label: 'Wallets',
 		icon: 'i-lucide-wallet',
-		to: '/wallets',
-		active: route.path.startsWith('/wallets'),
+		to: '/wallet',
+		active: route.path.startsWith('/wallet'),
 	},
 ])
 </script>
