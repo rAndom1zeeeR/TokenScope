@@ -462,3 +462,60 @@ export default defineTask({
 - [Nuxt 4: directory structure](https://nuxt.com/docs/4.x/directory-structure) — структура `app/`, `server/`, `shared/` и отдельные TypeScript-проекты.
 - [Nitro: tasks](https://nitro.build/guide/tasks) — `defineTask`, `scheduledTasks`, флаг `experimental.tasks`.
 - Официальная документация Drizzle ORM, lightweight-charts, Sigma.js, Helius и VueUse — перед каждым этапом сверьте примеры с актуальной версией, так как API этих библиотек меняется.
+
+## Данные
+
+Тот же минт, который уже читает `fetchMaybeMint`. Одно и то же для старого Token и Token-2022:
+
+- decimals — без него supply это сырой bigint
+- supply — total supply, показывать как supply / 10^decimals
+- mintAuthority — null значит допечатка закрыта
+- freezeAuthority — null значит заморозить кошельки нельзя
+
+Расширения на этом же минте. У новых pump.fun (create_v2) они уже в extensions, отдельные RPC не нужны:
+
+- TokenMetadata.updateAuthority — кто может менять имя и uri. У свежих pump часто null, метаданные залиты
+- TransferFeeConfig — комиссия перевода в bps и потолок. У pump обычно 0, но токен может быть с налогом
+- TransferHook — на перевод висит внешняя программа
+- PermanentDelegate — адрес, который может жечь и переводить чужие токены
+- MintCloseAuthority — минт можно закрыть
+- NonTransferable — перевод запрещён
+- Pausable — переводы можно остановить
+- ScaledUiAmountConfig — отображаемое количество не равно raw / 10^decimals. Делить втупую на таком минте нельзя
+- InterestBearingConfig — баланс растёт по ставке
+- MetadataPointer — куда смотреть метаданные, если они не на самом минте
+- На старом SPL-минте extensions пустой.
+
+Тот же Metaplex-аккаунт, его заголовок ты уже декодируешь. Дальше по байтам лежат:
+
+- sellerFeeBasisPoints — роялти, 500 = 5%
+- creators — адреса и доли
+- isMutable, updateAuthority
+- tokenStandard, primarySaleHappened, collection
+
+У create_v2 этого аккаунта нет.
+
+Тот же JSON, откуда берётся image. У pump обычно так:
+
+```
+{ "name", "symbol", "description", "image", "showName", "createdOn" }
+```
+
+У обычных токенов ещё `external_url`, `animation_url`, `attributes`, иногда twitter/telegram/website внутри `extensions` или `properties`. `description` у мем-коинов часто пустой.
+
+Не в минте.
+
+Кривая pump, PDA ["bonding-curve", mint] у программы 6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P. Пока монета не мигрировала:
+
+- virtualSolReserves, virtualTokenReserves — из них цена в SOL
+- realSolReserves, realTokenReserves — ликвидность на кривой
+- complete — кривая закончилась, торгуется уже пул
+- creator, дальше в новых аккаунтах isMayhemMode и cashback
+
+Формула цены, пока complete === false: (virtualSolReserves / 1e9) / (virtualTokenReserves / 10^decimals). После миграции кривая цену больше не держит, это уже пул PumpSwap или Raydium.
+
+Рынок, которого на цепи в минте нет: цена в USD, 24h, объём, ликвидность, FDV. Это Jupiter Price API или DexScreener. Твои $0.00041 и +128.4% оттуда, не из минта.
+
+Холдеры: `getTokenLargestAccounts` даёт топ-20 и их raw balance. Полное число холдеров публичный RPC не отдаёт, это уже индексатор.
+
+Возраст монеты: первая подпись минта через getSignaturesForAddress. На публичном RPC это дорого и режется лимитом.

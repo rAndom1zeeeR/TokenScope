@@ -5,4 +5,5 @@ export interface Token {
 	price: number
 	change24h: number
 	isLive: boolean
+	image: string | null
 }

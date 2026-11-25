@@ -41,6 +41,8 @@ const handleWatch = () => {
 	<div class="flex flex-col gap-4 py-4 sm:flex-row sm:items-start sm:justify-between">
 		<div class="flex min-w-0 items-center gap-5">
 			<UAvatar
+				:src="token.image || undefined"
+				:alt="token.name"
 				:text="token.name.slice(0, 1)"
 				size="3xl"
 				color="neutral"

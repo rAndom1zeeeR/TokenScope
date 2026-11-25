@@ -9,4 +9,7 @@ export default defineNuxtConfig({
 	devServer: {
 		port: 3013,
 	},
+	runtimeConfig: {
+		solanaRpcUrl: 'https://api.mainnet.solana.com',
+	},
 })
