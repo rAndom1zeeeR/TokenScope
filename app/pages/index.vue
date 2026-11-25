@@ -1,6 +1,6 @@
 <template>
 	<div>
 		<AppHero />
-		<TokenRecentTable />
+		<TokensRecentTable />
 	</div>
 </template>

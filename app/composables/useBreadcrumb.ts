@@ -49,15 +49,21 @@ export const useBreadcrumbLabel = (label: MaybeRefOrGetter<string | null | undef
 	const route = useRoute()
 	const labels = useBreadcrumbLabels()
 
+	const write = (path: string, value: string | null | undefined) => {
+		if (!value || labels.value[path] === value) return
+
+		labels.value = { ...labels.value, [path]: value }
+	}
+
+	write(route.path, toValue(label))
+
 	watch(
 		() => [route.path, toValue(label)] as const,
 		([path, value], _, onCleanup) => {
-			if (!value) return
-
-			labels.value = { ...labels.value, [path]: value }
+			write(path, value)
 
 			onCleanup(() => {
-				if (labels.value[path] !== value) return
+				if (typeof window === 'undefined' || !value || labels.value[path] !== value) return
 
 				labels.value = Object.fromEntries(
 					Object.entries(labels.value).filter(([key]) => key !== path),

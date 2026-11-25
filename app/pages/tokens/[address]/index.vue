@@ -1,10 +1,20 @@
 <script setup lang="ts">
+import type { Token } from '~/types/token'
+
 const route = useRoute()
-const address = route.params.address as string
+
+const token = computed<Token>(() => ({
+	name: 'Froge',
+	ticker: 'FROGE',
+	address: String(route.params.address),
+	price: 0.00041,
+	change24h: 128.4,
+	isLive: true,
+}))
+
+useBreadcrumbLabel(() => token.value.ticker)
 </script>
 
 <template>
-	<section>
-		<p>This page will be displayed at the /token/{{ address }} route.</p>
-	</section>
+	<TokensHeader :token="token" />
 </template>
