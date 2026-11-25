@@ -3,27 +3,48 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 
 const route = useRoute()
 
+const isHome = computed(() => route.path === '/')
+const query = ref('')
+
+const headerUi = computed(() =>
+	isHome.value ? undefined : { center: 'flex min-w-0 flex-1 items-center justify-center' },
+)
+
 const items = computed<NavigationMenuItem[]>(() => [
 	{
 		label: 'Tokens',
-		to: '/token',
+		to: '/tokens',
 		icon: 'i-lucide-coins',
-		active: route.path.startsWith('/token'),
+		active: route.path.startsWith('/tokens'),
 	},
 	{
 		label: 'Wallets',
 		icon: 'i-lucide-wallet',
-		to: '/wallet',
-		active: route.path.startsWith('/wallet'),
+		to: '/wallets',
+		active: route.path.startsWith('/wallets'),
 	},
 ])
 </script>
 
 <template>
-	<UHeader>
+	<UHeader :ui="headerUi">
 		<template #title>
 			<AppLogo />
 		</template>
+
+		<UInput
+			v-model="query"
+			type="search"
+			icon="i-lucide-search"
+			placeholder="Token or wallet address"
+			color="neutral"
+			variant="outline"
+			size="xl"
+			class="w-full"
+			aria-label="Token or wallet address"
+			autocomplete="off"
+			:ui="{ base: 'font-mono rounded-lg text-sm py-3', leadingIcon: 'size-4', leading: 'ps-4' }"
+		/>
 
 		<template #right>
 			<UNavigationMenu :items="items" class="hidden lg:flex" />

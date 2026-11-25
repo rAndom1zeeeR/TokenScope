@@ -13,6 +13,12 @@ export default defineAppConfig({
 			slots: {
 				root: 'border-none',
 				container: 'border-b border-default',
+				title: 'text-lg gap-4',
+			},
+		},
+		navigationMenu: {
+			slots: {
+				list: 'gap-4',
 			},
 		},
 		footer: {
