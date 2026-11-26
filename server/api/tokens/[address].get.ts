@@ -97,14 +97,17 @@ const findMetadataPda = async (mint: Address) => {
 	return pda
 }
 
-const readToken2022Metadata = (mintAccount: Account<Mint>): OnChainMetadata | null => {
+// Старые Metaplex-метаданные дополнены \0 до фиксированной длины, а trim() их не убирает
+const cleanString = (value: string) => value.replace(/\0/g, '').trim()
+
+const readToken2022Metadata =(mintAccount: Account<Mint>): OnChainMetadata | null => {
 	const extensions = unwrapOption(mintAccount.data.extensions)
 	const tokenMetadata = extensions?.find((extension) => extension.__kind === 'TokenMetadata')
 	if (tokenMetadata?.__kind !== 'TokenMetadata') return null
 	return {
-		name: tokenMetadata.name.trim(),
-		symbol: tokenMetadata.symbol.trim(),
-		uri: tokenMetadata.uri.trim(),
+		name: cleanString(tokenMetadata.name),
+		symbol: cleanString(tokenMetadata.symbol),
+		uri: cleanString(tokenMetadata.uri),
 	}
 }
 
@@ -113,9 +116,9 @@ const readMetaplexMetadata = (account: MaybeEncodedAccount): OnChainMetadata | n
 
 	const decoded = metaplexHeaderDecoder.decode(account.data)
 	return {
-		name: decoded.name.trim(),
-		symbol: decoded.symbol.trim(),
-		uri: decoded.uri.trim(),
+		name: cleanString(decoded.name),
+		symbol: cleanString(decoded.symbol),
+		uri: cleanString(decoded.uri),
 	} satisfies OnChainMetadata
 }
 
@@ -194,5 +197,5 @@ export default defineEventHandler(async (event) => {
 		supply: mintAccount.data.supply.toString(),
 		price: quote?.usdPrice ?? null,
 		change24h: quote?.priceChange24h ?? null,
-	}
+	} satisfies TokenResponse
 })

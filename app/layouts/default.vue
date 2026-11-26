@@ -4,7 +4,7 @@ const isHome = computed(() => route.path === '/')
 </script>
 
 <template>
-	<UApp>
+	<div>
 		<AppHeader />
 		<UMain>
 			<UContainer>
@@ -15,5 +15,5 @@ const isHome = computed(() => route.path === '/')
 			</UContainer>
 		</UMain>
 		<AppFooter />
-	</UApp>
+	</div>
 </template>

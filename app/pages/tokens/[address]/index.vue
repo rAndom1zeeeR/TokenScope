@@ -1,30 +1,43 @@
 <script setup lang="ts">
-import type { Token } from '~/types/token'
-
 const route = useRoute()
-const addressParam = computed(() => String(route.params.address))
+const address = computed(() => String(route.params.address))
 
+// Геттер-URL реактивен сам: при смене адреса useFetch перезапросит данные
 const {
-	data: meta,
+	data: token,
 	error,
 	status,
-} = useFetch<Token>(() => `/api/tokens/${addressParam.value}`, { watch: [addressParam] })
+	refresh,
+} = await useFetch<TokenResponse>(() => `/api/tokens/${address.value}`)
 
-const token = computed<Token>(() => ({
-	name: meta.value?.name ?? '',
-	symbol: meta.value?.symbol ?? '',
-	address: addressParam.value,
-	image: meta.value?.image ?? null,
-	price: meta.value?.price ?? 0,
-	change24h: meta.value?.change24h ?? 0,
-	isLive: true,
-}))
+const isNotFound = computed(() => error.value?.statusCode === 404)
 
-useBreadcrumbLabel(() => token.value.symbol)
+useBreadcrumbLabel(() => token.value?.symbol)
+
+useSeoMeta({
+	title: () => (token.value ? `${token.value.symbol} · TokenScope` : 'Token · TokenScope'),
+	description: () =>
+		token.value
+			? `${token.value.name} (${token.value.symbol}) price and trader analytics on TokenScope.`
+			: 'Token price and trader analytics on TokenScope.',
+})
 </script>
 
 <template>
 	<p v-if="status === 'pending'">Loading…</p>
-	<p v-else-if="error">{{ error.statusText }}</p>
+
+	<section v-else-if="isNotFound" class="py-8">
+		<h1 class="text-xl font-semibold">Token not found</h1>
+		<p class="mt-1 text-sm text-muted">
+			We couldn't find a token with this address. Check that it is a valid mint address.
+		</p>
+	</section>
+
+	<section v-else-if="error || !token" class="py-8">
+		<h1 class="text-xl font-semibold">Something went wrong</h1>
+		<p class="mt-1 text-sm text-muted">Failed to load the token. Please try again.</p>
+		<UButton class="mt-4" color="neutral" variant="outline" @click="() => refresh()">Retry</UButton>
+	</section>
+
 	<TokensHeader v-else :token="token" />
 </template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const route = useRoute()
-const address = route.params.address as string
+const address = computed(() => String(route.params.address))
 </script>
 
 <template>

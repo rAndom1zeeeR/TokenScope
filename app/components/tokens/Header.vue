@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { Token } from '~/types/token'
-
 interface Props {
 	token: Token
 }
@@ -10,18 +8,9 @@ const props = defineProps<Props>()
 const toast = useToast()
 const isWatching = ref(false)
 
-const usd = new Intl.NumberFormat('en-US', {
-	style: 'currency',
-	currency: 'USD',
-	maximumSignificantDigits: 3,
-})
-
 const isUp = computed(() => props.token.change24h >= 0)
-const priceLabel = computed(() => usd.format(props.token.price))
-const changeLabel = computed(() => {
-	const value = props.token.change24h
-	return isUp.value ? `▲ +${value.toFixed(1)}%` : `▼ ${value.toFixed(1)}%`
-})
+const priceLabel = computed(() => formatUsd(props.token.price))
+const changeLabel = computed(() => formatChange(props.token.change24h))
 
 const handleCopy = async () => {
 	try {

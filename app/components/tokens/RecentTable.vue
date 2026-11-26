@@ -103,11 +103,6 @@ const columns: TableColumn<RecentToken>[] = [
 	{ accessorKey: 'index', header: 'Index', enableSorting: false },
 ]
 
-const usd = new Intl.NumberFormat('en-US', {
-	style: 'currency',
-	currency: 'USD',
-	maximumSignificantDigits: 3,
-})
 const int = new Intl.NumberFormat('en-US')
 
 const indexView = {
@@ -145,12 +140,12 @@ const indexView = {
 			</template>
 
 			<template #price-cell="{ row }">
-				{{ usd.format(row.original.price) }}
+				{{ formatUsd(row.original.price) }}
 			</template>
 
 			<template #change24h-cell="{ row }">
 				<span :class="row.original.change24h >= 0 ? 'text-success' : 'text-error'">
-					{{ row.original.change24h >= 0 ? '▲ +' : '▼ ' }}{{ row.original.change24h.toFixed(1) }}%
+					{{ formatChange(row.original.change24h) }}
 				</span>
 			</template>
 
