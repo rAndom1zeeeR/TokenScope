@@ -52,7 +52,7 @@ const handleWatch = () => {
 			<div class="min-w-0">
 				<div class="flex flex-wrap items-center gap-3">
 					<h1 class="text-3xl font-semibold">{{ token.name }}</h1>
-					<span class="text-sm text-muted font-mono">{{ token.ticker }}</span>
+					<span class="text-sm text-muted font-mono">{{ token.symbol }}</span>
 					<UBadge
 						v-if="token.isLive"
 						color="neutral"

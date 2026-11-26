@@ -11,5 +11,6 @@ export default defineNuxtConfig({
 	},
 	runtimeConfig: {
 		solanaRpcUrl: 'https://api.mainnet.solana.com',
+		jupiterApiKey: '',
 	},
 })

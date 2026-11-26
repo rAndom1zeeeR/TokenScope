@@ -1,13 +1,6 @@
 <script setup lang="ts">
 import type { Token } from '~/types/token'
 
-interface TokenMeta {
-	address: string
-	name: string
-	ticker: string
-	image: string | null
-}
-
 const route = useRoute()
 const addressParam = computed(() => String(route.params.address))
 
@@ -15,19 +8,19 @@ const {
 	data: meta,
 	error,
 	status,
-} = useFetch<TokenMeta>(() => `/api/tokens/${addressParam.value}`, { watch: [addressParam] })
+} = useFetch<Token>(() => `/api/tokens/${addressParam.value}`, { watch: [addressParam] })
 
 const token = computed<Token>(() => ({
 	name: meta.value?.name ?? '',
-	ticker: meta.value?.ticker ?? '',
+	symbol: meta.value?.symbol ?? '',
 	address: addressParam.value,
 	image: meta.value?.image ?? null,
-	price: 0.00041,
-	change24h: 128.4,
+	price: meta.value?.price ?? 0,
+	change24h: meta.value?.change24h ?? 0,
 	isLive: true,
 }))
 
-useBreadcrumbLabel(() => token.value.ticker)
+useBreadcrumbLabel(() => token.value.symbol)
 </script>
 
 <template>

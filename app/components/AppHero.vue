@@ -16,7 +16,7 @@
 					variant="none"
 					size="xl"
 					icon="i-lucide-search"
-					placeholder="Token address or ticker"
+					placeholder="Token address or symbol"
 					class="flex-1"
 					:ui="{ base: 'font-mono ps-14' }"
 				/>
@@ -26,14 +26,14 @@
 			<div class="flex flex-wrap items-center justify-center gap-2">
 				<span class="text-sm text-muted">Try</span>
 				<UButton
-					v-for="ticker in ['$FROGE', '$MOONCAT', '$BLOKK']"
-					:key="ticker"
+					v-for="symbol in ['$FROGE', '$MOONCAT', '$BLOKK']"
+					:key="symbol"
 					color="neutral"
 					variant="outline"
 					size="lg"
 					class="rounded-full font-mono"
 				>
-					{{ ticker }}
+					{{ symbol }}
 				</UButton>
 			</div>
 		</div>

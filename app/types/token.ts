@@ -1,6 +1,6 @@
 export interface Token {
 	name: string
-	ticker: string
+	symbol: string
 	address: string
 	price: number
 	change24h: number

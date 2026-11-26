@@ -3,21 +3,21 @@ import type { TableColumn } from '@nuxt/ui'
 
 type IndexState = 'live' | 'indexing' | 'ready'
 
-interface RecentToken {
-	name: string
-	ticker: string
-	address: string
-	price: number
-	change24h: number
+interface RecentTokenIndex {
+	state: IndexState
+	progress?: number
+}
+
+interface RecentToken extends Omit<Token, 'isLive' | 'image'> {
 	traders: number
 	inProfit: number
-	index: { state: IndexState; progress?: number }
+	index: RecentTokenIndex
 }
 
 const data: RecentToken[] = [
 	{
 		name: 'Froge',
-		ticker: 'FROGE',
+		symbol: 'FROGE',
 		address: 'H4pM…r8Vd',
 		price: 0.00041,
 		change24h: 128.4,
@@ -27,7 +27,7 @@ const data: RecentToken[] = [
 	},
 	{
 		name: 'Moon Cat',
-		ticker: 'MOONCAT',
+		symbol: 'MOONCAT',
 		address: '3dFh…q9Zt',
 		price: 0.0192,
 		change24h: -12.7,
@@ -37,7 +37,7 @@ const data: RecentToken[] = [
 	},
 	{
 		name: 'Blokk',
-		ticker: 'BLOKK',
+		symbol: 'BLOKK',
 		address: '9sRw…Lk4e',
 		price: 0.00087,
 		change24h: 3.1,
@@ -47,7 +47,7 @@ const data: RecentToken[] = [
 	},
 	{
 		name: 'Nimbus',
-		ticker: 'NMBS',
+		symbol: 'NMBS',
 		address: 'Ek2V…b7Hn',
 		price: 1.84,
 		change24h: -0.9,
@@ -57,7 +57,7 @@ const data: RecentToken[] = [
 	},
 	{
 		name: 'Pixelpaw',
-		ticker: 'PXLP',
+		symbol: 'PXLP',
 		address: 'Ac8T…u1Dy',
 		price: 0.0033,
 		change24h: 41.0,
@@ -137,7 +137,7 @@ const indexView = {
 					<div class="leading-tight">
 						<p>
 							<span class="font-medium">{{ row.original.name }}</span>
-							<span class="text-muted"> {{ row.original.ticker }}</span>
+							<span class="text-muted"> {{ row.original.symbol }}</span>
 						</p>
 						<p class="font-mono text-xs text-dimmed">{{ row.original.address }}</p>
 					</div>

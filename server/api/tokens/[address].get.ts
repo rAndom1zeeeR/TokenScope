@@ -2,7 +2,7 @@ import {
 	addDecoderSizePrefix,
 	address,
 	createSolanaRpc,
-	fetchEncodedAccount,
+	fetchEncodedAccounts,
 	getAddressDecoder,
 	getAddressEncoder,
 	getProgramDerivedAddress,
@@ -11,9 +11,11 @@ import {
 	getU8Decoder,
 	getUtf8Decoder,
 	unwrapOption,
+	type Account,
 	type Address,
+	type MaybeEncodedAccount,
 } from '@solana/kit'
-import { fetchMaybeMint } from '@solana-program/token-2022'
+import { decodeMint, type Mint } from '@solana-program/token-2022'
 
 const TOKEN_METADATA_PROGRAM = address('metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s')
 
@@ -30,7 +32,7 @@ const metaplexHeaderDecoder = getStructDecoder([
 
 interface OnChainMetadata {
 	name: string
-	ticker: string
+	symbol: string
 	uri: string
 }
 
@@ -95,30 +97,24 @@ const findMetadataPda = async (mint: Address) => {
 	return pda
 }
 
-const readToken2022Metadata = async (rpc: ReturnType<typeof createSolanaRpc>, mint: Address) => {
-	const mintAccount = await withRetry(() => fetchMaybeMint(rpc, mint))
-	if (!mintAccount.exists) return null
-
+const readToken2022Metadata = (mintAccount: Account<Mint>): OnChainMetadata | null => {
 	const extensions = unwrapOption(mintAccount.data.extensions)
 	const tokenMetadata = extensions?.find((extension) => extension.__kind === 'TokenMetadata')
 	if (tokenMetadata?.__kind !== 'TokenMetadata') return null
-
 	return {
 		name: tokenMetadata.name.trim(),
-		ticker: tokenMetadata.symbol.trim(),
+		symbol: tokenMetadata.symbol.trim(),
 		uri: tokenMetadata.uri.trim(),
-	} satisfies OnChainMetadata
+	}
 }
 
-const readMetaplexMetadata = async (rpc: ReturnType<typeof createSolanaRpc>, mint: Address) => {
-	const pda = await findMetadataPda(mint)
-	const account = await withRetry(() => fetchEncodedAccount(rpc, pda))
+const readMetaplexMetadata = (account: MaybeEncodedAccount): OnChainMetadata | null => {
 	if (!account.exists || account.programAddress !== TOKEN_METADATA_PROGRAM) return null
 
 	const decoded = metaplexHeaderDecoder.decode(account.data)
 	return {
 		name: decoded.name.trim(),
-		ticker: decoded.symbol.trim(),
+		symbol: decoded.symbol.trim(),
 		uri: decoded.uri.trim(),
 	} satisfies OnChainMetadata
 }
@@ -129,6 +125,23 @@ const readImage = async (uri: string) => {
 	try {
 		const json = await $fetch<{ image?: string }>(normalizeUri(uri), { timeout: 8000 })
 		return json.image ? normalizeUri(json.image) : null
+	} catch {
+		return null
+	}
+}
+
+interface JupiterPrice {
+	usdPrice: number
+	priceChange24h: number | null
+}
+const readPrice = async (mint: Address) => {
+	const key = useRuntimeConfig().jupiterApiKey
+	try {
+		const json = await $fetch<Record<string, JupiterPrice>>(
+			`https://api.jup.ag/price/v3?ids=${mint}`,
+			{ timeout: 8000, headers: key ? { 'x-api-key': key } : undefined },
+		)
+		return json[mint] ?? null
 	} catch {
 		return null
 	}
@@ -147,17 +160,39 @@ export default defineEventHandler(async (event) => {
 		throw createError({ statusCode: 400, statusMessage: 'Invalid mint address' })
 	}
 
+	// Цена не зависит от метаданных — запускаем сразу и не ждём,
+	// пока отработает цепочка RPC → декодирование → картинка.
+	// readPrice сам глотает ошибки, поэтому unhandled rejection не будет,
+	// даже если RPC ниже бросит 404.
+	const pricePromise = readPrice(mint)
+
 	const rpc = createSolanaRpc(useRuntimeConfig().solanaRpcUrl)
-	const metadata =
-		(await readToken2022Metadata(rpc, mint)) ?? (await readMetaplexMetadata(rpc, mint))
+	const pda = await findMetadataPda(mint)
+	const [mintEncoded, metadataEncoded] = await withRetry(() =>
+		fetchEncodedAccounts<[string, string]>(rpc, [mint, pda]),
+	)
+
+	const mintAccount = decodeMint(mintEncoded)
+	if (!mintAccount.exists) {
+		throw createError({ statusCode: 404, statusMessage: 'Mint not found' })
+	}
+
+	const metadata = readToken2022Metadata(mintAccount) ?? readMetaplexMetadata(metadataEncoded)
 	if (!metadata) {
 		throw createError({ statusCode: 404, statusMessage: 'Token metadata not found' })
 	}
 
+	// Картинка (IPFS) и цена (Jupiter) ждутся параллельно
+	const [image, quote] = await Promise.all([readImage(metadata.uri), pricePromise])
+
 	return {
 		address: mint,
 		name: metadata.name,
-		ticker: metadata.ticker,
-		image: await readImage(metadata.uri),
+		symbol: metadata.symbol,
+		image,
+		decimals: mintAccount.data.decimals,
+		supply: mintAccount.data.supply.toString(),
+		price: quote?.usdPrice ?? null,
+		change24h: quote?.priceChange24h ?? null,
 	}
 })
