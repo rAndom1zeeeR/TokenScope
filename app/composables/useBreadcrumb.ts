@@ -5,15 +5,25 @@ interface BreadcrumbLabels {
 }
 
 const SEGMENT_LABELS: Record<string, string> = {
-	token: 'Tokens',
-	wallet: 'Wallets',
+	tokens: 'Tokens',
+	wallets: 'Wallets',
+}
+
+// В адресной строке может оказаться битая последовательность вроде `%E0` — тогда
+// decodeURIComponent бросает URIError и роняет страницу.
+const safeDecode = (segment: string) => {
+	try {
+		return decodeURIComponent(segment)
+	} catch {
+		return segment
+	}
 }
 
 const formatSegment = (segment: string): string => {
 	const known = SEGMENT_LABELS[segment]
 	if (known) return known
 
-	const decoded = decodeURIComponent(segment)
+	const decoded = safeDecode(segment)
 	if (decoded.length > 16) return `${decoded.slice(0, 6)}…${decoded.slice(-4)}`
 
 	return decoded.charAt(0).toUpperCase() + decoded.slice(1)
@@ -55,15 +65,16 @@ export const useBreadcrumbLabel = (label: MaybeRefOrGetter<string | null | undef
 		labels.value = { ...labels.value, [path]: value }
 	}
 
-	write(route.path, toValue(label))
-
+	// immediate: метка записывается сразу при установке (в т.ч. на сервере) и при каждом изменении
 	watch(
 		() => [route.path, toValue(label)] as const,
 		([path, value], _, onCleanup) => {
 			write(path, value)
 
+			// При уходе со страницы убираем метку, чтобы в крошках не оставалось старого символа.
+			// На сервере не чистим: состояние должно попасть в payload.
 			onCleanup(() => {
-				if (typeof window === 'undefined' || !value || labels.value[path] !== value) return
+				if (!import.meta.client || !value || labels.value[path] !== value) return
 
 				labels.value = Object.fromEntries(
 					Object.entries(labels.value).filter(([key]) => key !== path),

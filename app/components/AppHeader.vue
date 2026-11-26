@@ -4,7 +4,7 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 const route = useRoute()
 
 const isHome = computed(() => route.path === '/')
-const query = ref('')
+const { query, submit } = useAddressSearch()
 
 const headerUi = computed(() =>
 	isHome.value ? undefined : { center: 'flex min-w-0 flex-1 items-center justify-center' },
@@ -33,6 +33,7 @@ const items = computed<NavigationMenuItem[]>(() => [
 		</template>
 
 		<UInput
+			v-if="!isHome"
 			v-model="query"
 			type="search"
 			icon="i-lucide-search"
@@ -44,6 +45,7 @@ const items = computed<NavigationMenuItem[]>(() => [
 			aria-label="Token or wallet address"
 			autocomplete="off"
 			:ui="{ base: 'font-mono rounded-lg text-sm py-3', leadingIcon: 'size-4', leading: 'ps-4' }"
+			@keydown.enter="submit()"
 		/>
 
 		<template #right>

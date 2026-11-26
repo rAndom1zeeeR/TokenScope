@@ -1,75 +1,60 @@
-# Nuxt Minimal Starter
+# TokenScope
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Open-source аналитика токенов и трейдеров: кто на самом деле заработал на токене.
+Solana в первую очередь, EVM позже. Проект на Nuxt 4 и Nuxt UI, это портфолио для работы с Vue.
 
-## Setup
+Подробный план реализации: [docs/TokenScope — план реализации на Nuxt.md](docs/TokenScope%20—%20план%20реализации%20на%20Nuxt.md).
 
-Make sure to install dependencies:
+## Что уже работает
+
+- Главная с поиском по адресу и таблицей примеров (демо-данные).
+- Страница токена `/tokens/:address`: имя, символ, картинка, цена и изменение за 24 часа.
+- API `GET /api/tokens/:address`: метаданные из сети Solana (Metaplex и Token-2022), цена из Jupiter.
+  Ответы кэшируются на сервере (Nitro), число запросов с одного IP ограничено, внешние ссылки
+  загружаются с защитой от SSRF.
+- Клиентский кэш и запросы: [TanStack Query](https://tanstack.com/query) (`@tanstack/vue-query`).
+  Плагин `app/plugins/vue-query.ts` переносит кэш с сервера в браузер, запросы токена — в
+  `app/composables/useTokenQuery.ts`.
+
+## Запуск
+
+Нужны Node.js 20+ и [pnpm](https://pnpm.io).
 
 ```bash
-# npm
-npm install
-
-# pnpm
 pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+cp .env.example .env   # при необходимости заполните переменные
+pnpm dev               # http://localhost:3013
 ```
 
-## Development Server
+### Переменные окружения
 
-Start the development server on `http://localhost:3000`:
+| Переменная             | Назначение                                                                     |
+| ---------------------- | ------------------------------------------------------------------------------ |
+| `NUXT_SOLANA_RPC_URL`  | RPC-узел Solana. Публичный `api.mainnet.solana.com` ограничен, лучше свой узел |
+| `NUXT_JUPITER_API_KEY` | Ключ Jupiter Price API (необязателен)                                          |
 
-```bash
-# npm
-npm run dev
+## Команды
 
-# pnpm
-pnpm dev
+| Команда          | Что делает                    |
+| ---------------- | ----------------------------- |
+| `pnpm dev`       | сервер разработки             |
+| `pnpm build`     | production-сборка             |
+| `pnpm preview`   | запуск собранной версии       |
+| `pnpm typecheck` | проверка типов                |
+| `pnpm lint`      | ESLint (`lint:fix` — чинит)   |
+| `pnpm fmt`       | форматирование oxfmt          |
 
-# yarn
-yarn dev
+## Структура
 
-# bun
-bun run dev
+```
+app/        интерфейс: страницы, компоненты, composables, утилиты форматирования
+server/     API (api/) и серверные утилиты (utils/): RPC, кэш, повторы, защита
+shared/     типы, общие для app и server (контракт API)
+docs/       план реализации
 ```
 
-## Production
+## Заметки
 
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+- Кэш Nitro хранится в памяти процесса, лимит запросов тоже. При запуске в несколько
+  экземпляров нужно общее хранилище (например, Redis).
+- За прокси (Traefik/Dokploy) IP клиента берётся из `X-Forwarded-For`.

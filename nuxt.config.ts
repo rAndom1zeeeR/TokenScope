@@ -3,7 +3,6 @@ export default defineNuxtConfig({
 	compatibilityDate: '2025-07-15',
 	devtools: { enabled: true },
 	typescript: {
-		strict: true,
 		// Nuxt ставит `module: preserve` (TS >= 5.4). Редактор на TS 5.3 это значение
 		// отбрасывает и запрещает top-level await в `<script setup>`.
 		tsConfig: {

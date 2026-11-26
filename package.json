@@ -16,19 +16,18 @@
 	},
 	"dependencies": {
 		"@nuxt/ui": "^4.13.0",
-		"@solana-program/token": "^0.18.0",
 		"@solana-program/token-2022": "^0.20.1",
 		"@solana/kit": "^8.6.0",
-		"@solana/sysvars": "^8.6.0",
+		"@tanstack/vue-query": "^5.100.0",
 		"nuxt": "^4.6.4",
 		"tailwindcss": "^4.3.5",
 		"vue": "^3.5.45"
 	},
 	"devDependencies": {
 		"@nuxt/eslint": "^1.17.0",
+		"@types/node": "^24.19.4",
 		"eslint": "^10.15.0",
 		"oxfmt": "^0.79.0",
-		"oxlint-tsgolint": "^7.0.2008",
 		"typescript": "6.0.3",
 		"vue-tsc": "^3.3.14"
 	}

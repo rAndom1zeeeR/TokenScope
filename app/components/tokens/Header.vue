@@ -1,6 +1,6 @@
 <script setup lang="ts">
 interface Props {
-	token: Token
+	token: TokenResponse
 }
 
 const props = defineProps<Props>()
@@ -8,7 +8,8 @@ const props = defineProps<Props>()
 const toast = useToast()
 const isWatching = ref(false)
 
-const isUp = computed(() => props.token.change24h >= 0)
+const isUp = computed(() => props.token.change24h != null && props.token.change24h >= 0)
+const isDown = computed(() => props.token.change24h != null && props.token.change24h < 0)
 const priceLabel = computed(() => formatUsd(props.token.price))
 const changeLabel = computed(() => formatChange(props.token.change24h))
 
@@ -32,7 +33,7 @@ const handleWatch = () => {
 			<UAvatar
 				:src="token.image || undefined"
 				:alt="token.name"
-				:text="token.name.slice(0, 1)"
+				:text="(token.name || token.symbol).slice(0, 1)"
 				size="3xl"
 				color="neutral"
 				:ui="{ root: 'rounded-full size-16' }"
@@ -42,16 +43,6 @@ const handleWatch = () => {
 				<div class="flex flex-wrap items-center gap-3">
 					<h1 class="text-3xl font-semibold">{{ token.name }}</h1>
 					<span class="text-sm text-muted font-mono">{{ token.symbol }}</span>
-					<UBadge
-						v-if="token.isLive"
-						color="neutral"
-						variant="outline"
-						size="md"
-						:ui="{ base: 'rounded-full' }"
-					>
-						<span class="size-1.5 rounded-full bg-success" />
-						Live
-					</UBadge>
 				</div>
 
 				<div class="mt-1 flex min-w-0 items-center gap-1">
@@ -73,7 +64,7 @@ const handleWatch = () => {
 			<div class="text-right">
 				<p class="text-4xl font-semibold tabular-nums font-mono">{{ priceLabel }}</p>
 				<p class="text-sm mt-1">
-					<span class="tabular-nums" :class="{ 'text-success': isUp, 'text-error': !isUp }">
+					<span class="tabular-nums" :class="{ 'text-success': isUp, 'text-error': isDown }">
 						{{ changeLabel }}
 					</span>
 					<span class="text-muted"> 24h</span>
