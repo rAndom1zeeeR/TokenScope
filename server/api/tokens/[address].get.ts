@@ -5,14 +5,22 @@ export default defineEventHandler(async (event) => {
 
 	const raw = getRouterParam(event, 'address')
 	if (!raw) {
-		throw createError({ statusCode: 400, statusMessage: 'Missing address' })
+		throw createError({
+			statusCode: 400,
+			statusMessage: 'Missing address',
+			data: { code: TOKEN_ERROR.invalidAddress },
+		})
 	}
 
 	let mint: Address
 	try {
 		mint = address(raw)
 	} catch {
-		throw createError({ statusCode: 400, statusMessage: 'Invalid mint address' })
+		throw createError({
+			statusCode: 400,
+			statusMessage: 'Invalid mint address',
+			data: { code: TOKEN_ERROR.invalidAddress },
+		})
 	}
 
 	return await getToken(mint)

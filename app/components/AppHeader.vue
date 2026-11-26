@@ -3,7 +3,7 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 
 const route = useRoute()
 
-const isHome = computed(() => route.path === '/')
+const isHome = useIsHome()
 const { query, submit } = useAddressSearch()
 
 const headerUi = computed(() =>

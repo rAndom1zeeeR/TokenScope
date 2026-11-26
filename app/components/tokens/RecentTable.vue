@@ -8,7 +8,12 @@ interface RecentTokenIndex {
 	progress?: number
 }
 
-interface RecentToken extends Omit<Token, 'isLive' | 'image'> {
+interface RecentToken {
+	name: string
+	symbol: string
+	address: string
+	price: number
+	change24h: number
 	traders: number
 	inProfit: number
 	index: RecentTokenIndex

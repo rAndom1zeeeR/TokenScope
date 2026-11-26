@@ -169,6 +169,13 @@ const readMetaplexMetadata = (account: MaybeEncodedAccount): OnChainMetadata | n
 	}
 }
 
+const notAMint = () =>
+	createError({
+		statusCode: 400,
+		statusMessage: 'Address is not a token mint',
+		data: { code: TOKEN_ERROR.notAMint },
+	})
+
 const loadTokenMeta = async (mint: Address): Promise<TokenMeta> => {
 	const rpc = useSolanaRpc()
 	const pda = await findMetadataPda(mint)
@@ -187,10 +194,10 @@ const loadTokenMeta = async (mint: Address): Promise<TokenMeta> => {
 		const { data } = mintEncoded
 		const looksLikeMint = data.length === 82 || (data.length > 165 && data[165] === 1)
 		if (!looksLikeMint) {
-			throw createError({
-				statusCode: 400,
-				statusMessage: `Address is not a token mint (owner: ${mintEncoded.programAddress}, length: ${data.length})`,
-			})
+			console.warn(
+				`[tokens] ${mint} is not a mint: owner ${mintEncoded.programAddress}, length ${data.length}`,
+			)
+			throw notAMint()
 		}
 	}
 
@@ -208,10 +215,10 @@ const loadTokenMeta = async (mint: Address): Promise<TokenMeta> => {
 		const fallback = readMintFallback(mintEncoded.data)
 		if (!fallback) {
 			const { data } = mintEncoded
-			throw createError({
-				statusCode: 400,
-				statusMessage: `Address is not a token mint (length: ${data.length}, initialized: ${data[45]}, type: ${data[165]})`,
-			})
+			console.warn(
+				`[tokens] ${mint} is not a mint: length ${data.length}, initialized ${data[45]}, type ${data[165]}`,
+			)
+			throw notAMint()
 		}
 		decimals = fallback.decimals
 		supply = fallback.supply

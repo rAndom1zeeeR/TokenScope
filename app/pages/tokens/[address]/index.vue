@@ -1,4 +1,11 @@
 <script setup lang="ts">
+import { isSolanaAddress } from '#shared/utils/solana-address'
+
+// Мусорный адрес — сразу 404, без запроса к серверу
+definePageMeta({
+	validate: (route) => isSolanaAddress(String(route.params.address)),
+})
+
 const route = useRoute()
 const address = computed(() => String(route.params.address))
 
@@ -35,7 +42,7 @@ useSeoMeta({
 </script>
 
 <template>
-	<p v-if="isPending">Loading…</p>
+	<TokensHeaderSkeleton v-if="isPending" />
 
 	<section v-else-if="isNotFound" class="py-8">
 		<h1 class="text-xl font-semibold">Token not found</h1>

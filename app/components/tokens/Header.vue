@@ -6,7 +6,6 @@ interface Props {
 const props = defineProps<Props>()
 
 const toast = useToast()
-const isWatching = ref(false)
 
 const isUp = computed(() => props.token.change24h != null && props.token.change24h >= 0)
 const isDown = computed(() => props.token.change24h != null && props.token.change24h < 0)
@@ -20,10 +19,6 @@ const handleCopy = async () => {
 	} catch {
 		toast.add({ title: 'Could not copy address', color: 'error' })
 	}
-}
-
-const handleWatch = () => {
-	isWatching.value = !isWatching.value
 }
 </script>
 
@@ -60,26 +55,14 @@ const handleWatch = () => {
 			</div>
 		</div>
 
-		<div class="flex shrink-0 items-center gap-4">
-			<div class="text-right">
-				<p class="text-4xl font-semibold tabular-nums font-mono">{{ priceLabel }}</p>
-				<p class="text-sm mt-1">
-					<span class="tabular-nums" :class="{ 'text-success': isUp, 'text-error': isDown }">
-						{{ changeLabel }}
-					</span>
-					<span class="text-muted"> 24h</span>
-				</p>
-			</div>
-
-			<UButton
-				color="neutral"
-				size="lg"
-				variant="outline"
-				:aria-pressed="isWatching"
-				@click="handleWatch"
-			>
-				{{ isWatching ? 'Watching' : 'Watch' }}
-			</UButton>
+		<div class="shrink-0 text-right">
+			<p class="text-4xl font-semibold tabular-nums font-mono">{{ priceLabel }}</p>
+			<p class="mt-1 text-sm">
+				<span class="tabular-nums" :class="{ 'text-success': isUp, 'text-error': isDown }">
+					{{ changeLabel }}
+				</span>
+				<span class="text-muted"> 24h</span>
+			</p>
 		</div>
 	</div>
 </template>

@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import { isSolanaAddress } from '#shared/utils/solana-address'
+
+definePageMeta({
+	validate: (route) => isSolanaAddress(String(route.params.address)),
+})
+
 const route = useRoute()
 const address = computed(() => String(route.params.address))
 </script>
