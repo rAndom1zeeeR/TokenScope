@@ -13,6 +13,7 @@ export default defineNuxtConfig({
 	},
 	modules: ['@nuxt/ui', '@nuxt/eslint'],
 	css: ['~/assets/css/main.css'],
+	colorMode: { preference: 'dark' },
 	devServer: {
 		port: 3013,
 	},

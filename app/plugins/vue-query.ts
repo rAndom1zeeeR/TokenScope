@@ -1,12 +1,13 @@
 import type { DehydratedState, VueQueryPluginOptions } from '@tanstack/vue-query'
 import { dehydrate, hydrate, QueryClient, VueQueryPlugin } from '@tanstack/vue-query'
+import type { NuxtApp, Plugin } from '#app'
 
 /**
  * TanStack Query для Nuxt: один QueryClient на запрос (SSR) / на вкладку (клиент).
  * Состояние кэша после серверного рендера попадает в payload и подхватывается в браузере,
  * поэтому данные, загруженные на сервере, повторно не запрашиваются.
  */
-export default defineNuxtPlugin((nuxtApp) => {
+const vueQueryPlugin: Plugin = defineNuxtPlugin((nuxtApp: NuxtApp): void => {
 	const vueQueryState = useState<DehydratedState | null>('vue-query')
 
 	const queryClient = new QueryClient({
@@ -29,7 +30,10 @@ export default defineNuxtPlugin((nuxtApp) => {
 
 	if (import.meta.client) {
 		nuxtApp.hooks.hook('app:created', () => {
+			if (!vueQueryState.value) return
 			hydrate(queryClient, vueQueryState.value)
 		})
 	}
 })
+
+export default vueQueryPlugin

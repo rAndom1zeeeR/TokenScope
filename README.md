@@ -35,14 +35,14 @@ pnpm dev               # http://localhost:3013
 
 ## Команды
 
-| Команда          | Что делает                    |
-| ---------------- | ----------------------------- |
-| `pnpm dev`       | сервер разработки             |
-| `pnpm build`     | production-сборка             |
-| `pnpm preview`   | запуск собранной версии       |
-| `pnpm typecheck` | проверка типов                |
-| `pnpm lint`      | ESLint (`lint:fix` — чинит)   |
-| `pnpm fmt`       | форматирование oxfmt          |
+| Команда          | Что делает                  |
+| ---------------- | --------------------------- |
+| `pnpm dev`       | сервер разработки           |
+| `pnpm build`     | production-сборка           |
+| `pnpm preview`   | запуск собранной версии     |
+| `pnpm typecheck` | проверка типов              |
+| `pnpm lint`      | ESLint (`lint:fix` — чинит) |
+| `pnpm fmt`       | форматирование oxfmt        |
 
 ## Структура
 

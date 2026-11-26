@@ -10,9 +10,7 @@ export type TokenLookup =
 	| { status: 'not-mint' }
 
 export const getErrorStatusCode = (error: unknown): number | undefined =>
-	typeof error === 'object' && error && 'statusCode' in error
-		? Number(error.statusCode)
-		: undefined
+	typeof error === 'object' && error && 'statusCode' in error ? Number(error.statusCode) : undefined
 
 /**
  * IP клиента для серверного лимита запросов. При SSR запрос к `/api` идёт внутри процесса
