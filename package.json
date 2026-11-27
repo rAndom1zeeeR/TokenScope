@@ -15,20 +15,20 @@
 		"fmt:check": "oxfmt --check ."
 	},
 	"dependencies": {
-		"@nuxt/ui": "^4.13.0",
+		"@nuxt/ui": "^4.13.1",
 		"@solana-program/token-2022": "^0.20.1",
 		"@solana/kit": "^8.6.0",
-		"@tanstack/vue-query": "^5.100.0",
-		"nuxt": "^4.6.4",
+		"@tanstack/vue-query": "^5.108.4",
+		"nuxt": "^4.7.0",
 		"tailwindcss": "^4.3.5",
-		"vue": "^3.5.45"
+		"vue": "^3.5.46"
 	},
 	"devDependencies": {
 		"@nuxt/eslint": "^1.17.0",
-		"@types/node": "^24.19.4",
+		"@types/node": "^26.6.11",
 		"eslint": "^10.15.0",
-		"oxfmt": "^0.79.0",
-		"typescript": "6.0.3",
+		"oxfmt": "^0.80.0",
+		"typescript": "7.0.2",
 		"vue-tsc": "^3.3.14"
 	}
 }
